@@ -1,0 +1,12 @@
+version: '3.0'
+
+services:
+  training:
+    image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
+    container_name: rltrading
+    volumes: 
+      - ./data:/data
+      - ./src:/src
+    entrypoint: /bin/sh
+    stdin_open: true
+    tty: true

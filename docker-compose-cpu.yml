@@ -1,0 +1,9 @@
+version: '3.0'
+
+services:
+  training:
+    image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
+    container_name: rltrading
+    environment:
+      - MODULE_REPO=git+https://github.com/jenslaufer/rl-trading.git
+      - MODULE_CMD=trading.train
