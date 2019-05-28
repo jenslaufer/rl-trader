@@ -6,7 +6,7 @@ services:
     container_name: rltrader
     environment:
       - MODULE_REPO=git+ssh://git@bitbucket.org:jenslaufer/rl-trader.git
-      - MODULE_CMD=trading.train
+      - MODULE_CMD=rltrader.trainer
 
 secrets:
   my_secret:
