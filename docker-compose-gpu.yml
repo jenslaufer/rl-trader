@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.3'
 
 services:
   training:
@@ -7,6 +7,8 @@ services:
     environment:
       - MODULE_REPO=git+ssh://git@bitbucket.org:jenslaufer/rl-trader.git
       - MODULE_CMD=rltrader.trainer
+    secrets:
+      - my_secret
       
 secrets:
   my_secret:
