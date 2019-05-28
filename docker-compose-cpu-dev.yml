@@ -10,3 +10,6 @@ services:
     entrypoint: /bin/sh
     stdin_open: true
     tty: true
+    secrets:
+      host_ssh_key:
+        file: ~/.ssh/rl
