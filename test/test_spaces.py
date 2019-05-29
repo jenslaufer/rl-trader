@@ -33,7 +33,7 @@ def test_data_space_reset_unrandom():
     space = get_space(action_space, lookback, False, None)
 
     assert space.action_space == action_space
-    assert space.current_index == (len(df) - lookback)
+    assert space.current_index == (len(df) - lookback) + 1
 
 
 def test_data_space_reset_random():
@@ -50,17 +50,12 @@ def test_next_observation():
     lookback = 2
     space = get_space(action_space, lookback, True, 9)
 
-    expected0 = np.array(
-        [[1., 1.], [0.5, 0.75], [0., 0.]]).astype('float64')
+    expected0 = np.array([[1., 1.], [0.5, 0.75], [0., 0.]])
     obs = space.next_observation()
     assert np.array_equal(obs, expected0)
 
-    expected1 = np.array(
-        [[1., 1.], [0.2, 0.], [0., 0.12]]).astype('float64')
+    expected1 = np.array([[1., 1.], [0.2, 0.], [0., 0.12]])
     obs = space.next_observation()
-
-    print(type(obs.dtype))
-    print(type(expected1.dtype))
     assert np.allclose(obs, expected1)
 
     obs = space.next_observation()

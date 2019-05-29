@@ -33,14 +33,12 @@ class DataSpace(Space):
             self.current_index = random.randint(
                 self.history_lookback, len(self.data))
         else:
-            self.current_index = (len(self.data) - self.history_lookback)
+            self.current_index = (len(self.data) - self.history_lookback) + 1
 
     def next_observation(self):
         obs = None
 
         if self.current_index <= len(self.data):
-            print(self.data[self.current_index -
-                            self.history_lookback - 1: self.current_index])
             obs = self.__scaler.fit_transform(self.data[self.current_index -
                                                         self.history_lookback - 1: self.current_index])
             self.current_index += 1
