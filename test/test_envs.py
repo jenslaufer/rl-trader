@@ -25,7 +25,7 @@ def test_space2():
     action_space = spaces.Discrete(2)
     df = pd.DataFrame([{'feature1': 12, 'feature2': 56}, {
                       'feature1': 14, 'feature2': 44}, {'feature1': 11, 'feature2': 39}])
-    space = rlspaces.DataSpace(action_space=action_space, lookback=lookback,
+    space = rlspaces.DataSpace(action_space=action_space, history_lookback=lookback,
                                data=df)
     env = get_env(space)
 
