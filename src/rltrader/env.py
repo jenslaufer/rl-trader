@@ -9,12 +9,11 @@ class Env(BaseEnv):
         self.space = space
 
     def reset(self):
-        obs = self.space.next_observation()
+        obs, done = self.space.next_observation()
         return obs
 
     def step(self, action):
-        obs = None
+        obs, done = self.space.next_observation()
         reward = 0
-        done = False
         info = {}
         return obs, reward, done, info

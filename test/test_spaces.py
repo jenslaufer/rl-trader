@@ -51,12 +51,15 @@ def test_next_observation():
     space = get_space(action_space, lookback, True, 9)
 
     expected0 = np.array([[1., 1.], [0.5, 0.75], [0., 0.]])
-    obs = space.next_observation()
+    obs, done = space.next_observation()
     assert np.array_equal(obs, expected0)
+    assert not done
 
     expected1 = np.array([[1., 1.], [0.2, 0.], [0., 0.12]])
-    obs = space.next_observation()
+    obs, done = space.next_observation()
     assert np.allclose(obs, expected1)
+    assert done
 
-    obs = space.next_observation()
+    obs, done = space.next_observation()
     assert obs == None
+    assert done

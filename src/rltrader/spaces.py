@@ -36,11 +36,15 @@ class DataSpace(Space):
             self.current_index = (len(self.data) - self.history_lookback) + 1
 
     def next_observation(self):
+        done = False
         obs = None
 
         if self.current_index <= len(self.data):
             obs = self.__scaler.fit_transform(self.data[self.current_index -
                                                         self.history_lookback - 1: self.current_index])
-            self.current_index += 1
+        if self.current_index >= len(self.data):
+            done = True
 
-        return obs
+        self.current_index += 1
+
+        return (obs, done)

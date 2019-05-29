@@ -48,15 +48,32 @@ def test_reset():
 
 
 def test_step():
+    lookback = 3
     action_space = spaces.Discrete(2)
-    observation_space = spaces.Box(low=0, high=1, shape=(2, 3))
-    space = rlspaces.Space(action_space=action_space,
-                           observation_space=observation_space)
+
+    expected = np.array([[0.5, 0.],
+                         [0., 0.79166667],
+                         [1., 1.],
+                         [0.33333333, 0.47916667]])
+    space = get_data_space(lookback, action_space)
     env = get_env(space)
+
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert obs == None
     assert reward == 0
     assert done == False
     assert info == {}
+    assert np.allclose(obs, expected)
+
+
+def test_step_done():
+    lookback = 3
+    action_space = spaces.Discrete(2)
+
+    space = get_data_space(lookback, action_space)
+    env = get_env(space)
+
+    for n in range(5):
+        obs, reward, done, info = env.step(1)
+    assert done
