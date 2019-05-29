@@ -10,12 +10,12 @@ class Env(BaseEnv):
         self.context = context
 
     def reset(self):
-        obs, done = self.space.next_observation()
+        obs, scaled_obs, done = self.space.next_observation()
 
-        return obs
+        return scaled_obs
 
     def step(self, action):
-        obs, done = self.space.next_observation()
+        obs, scaled_obs, done = self.space.next_observation()
         reward, done_act, context = self.context.act(action, obs)
 
-        return (obs, reward, (done | done_act), context)
+        return (scaled_obs, reward, (done | done_act), context)
