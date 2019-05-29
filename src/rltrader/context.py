@@ -21,3 +21,12 @@ class DummyContext(Context):
         self.current_index += 1
 
         return (reward, done, context)
+
+
+class TradingContext(Context):
+
+    def __init__(self, initial_fundings, trading_loss_pct):
+        self.initial_fundings = initial_fundings
+        self.trading_loss_pct = trading_loss_pct
+        self.balance = 0
+        self.asset_balance = 0
