@@ -72,7 +72,7 @@ def test_step():
 
     assert reward == 8
     assert done == False
-    assert info == {}
+    assert info == {"b": "blubb"}
     assert np.allclose(obs, expected)
 
     expected = np.array([[0.25, 0.9],
@@ -84,8 +84,8 @@ def test_step():
     obs, reward, done, info = env.step(action)
 
     assert reward == 2
-    assert done == False
-    assert info == {}
+    assert done == True
+    assert info == {"b": "blabb"}
     assert np.allclose(obs, expected)
 
 
@@ -97,6 +97,6 @@ def test_step_done():
     context = get_context()
     env = get_env(space, context)
 
-    for n in range(5):
+    for n in range(3):
         obs, reward, done, info = env.step(1)
     assert done

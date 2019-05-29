@@ -5,7 +5,7 @@ services:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-gpu
     container_name: rltrader
     environment:
-      - MODULE_REPO=git+ssh://git@bitbucket.org:jenslaufer/rl-trader.git
+      - MODULE_REPO=git+ssh://git@bitbucket.org/jenslaufer/rl-trader.git
       - MODULE_CMD=rltrader.trainer
     secrets:
       - my_secret
