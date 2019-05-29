@@ -1,13 +1,18 @@
 import context
 from rltrader import env as rlenvs
 from rltrader import spaces as rlspaces
+from rltrader import context as rlcontexts
 from gym import spaces
 import pandas as pd
 import numpy as np
 
 
-def get_env(space):
-    return rlenvs.Env(space=space)
+def get_context():
+    return rlcontexts.DummyContext()
+
+
+def get_env(space, context):
+    return rlenvs.Env(space=space, context=context)
 
 
 def get_data_space(lookback, action_space):
@@ -27,7 +32,8 @@ def test_space():
     observation_space = spaces.Box(low=0, high=1, shape=(2, 3))
     space = rlspaces.Space(action_space=action_space,
                            observation_space=observation_space)
-    env = get_env(space)
+    context = get_context()
+    env = get_env(space, context)
 
     assert env.action_space == action_space
     assert env.observation_space == observation_space
@@ -37,12 +43,14 @@ def test_reset():
     lookback = 3
     action_space = spaces.Discrete(2)
 
+    space = get_data_space(lookback, action_space)
+    context = get_context()
+    env = get_env(space, context)
+
     expected = np.array([[0.5, 0.],
                          [0., 0.79166667],
                          [1., 1.],
                          [0.33333333, 0.47916667]])
-    space = get_data_space(lookback, action_space)
-    env = get_env(space)
     actual = env.reset()
     assert np.allclose(actual, expected)
 
@@ -51,17 +59,31 @@ def test_step():
     lookback = 3
     action_space = spaces.Discrete(2)
 
+    space = get_data_space(lookback, action_space)
+    context = get_context()
+    env = get_env(space, context)
+
     expected = np.array([[0.5, 0.],
                          [0., 0.79166667],
                          [1., 1.],
                          [0.33333333, 0.47916667]])
-    space = get_data_space(lookback, action_space)
-    env = get_env(space)
+    action = 1
+    obs, reward, done, info = env.step(action)
+
+    assert reward == 8
+    assert done == False
+    assert info == {}
+    assert np.allclose(obs, expected)
+
+    expected = np.array([[0.25, 0.9],
+                         [1., 1.],
+                         [0.5, 0.75],
+                         [0., 0.]])
 
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert reward == 0
+    assert reward == 2
     assert done == False
     assert info == {}
     assert np.allclose(obs, expected)
@@ -72,7 +94,8 @@ def test_step_done():
     action_space = spaces.Discrete(2)
 
     space = get_data_space(lookback, action_space)
-    env = get_env(space)
+    context = get_context()
+    env = get_env(space, context)
 
     for n in range(5):
         obs, reward, done, info = env.step(1)

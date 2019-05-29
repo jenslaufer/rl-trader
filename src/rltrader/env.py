@@ -3,10 +3,11 @@ from gym import Env as BaseEnv
 
 class Env(BaseEnv):
 
-    def __init__(self, space):
+    def __init__(self, space, context):
         self.action_space = space.action_space
         self.observation_space = space.observation_space
         self.space = space
+        self.context = context
 
     def reset(self):
         obs, done = self.space.next_observation()
@@ -14,6 +15,6 @@ class Env(BaseEnv):
 
     def step(self, action):
         obs, done = self.space.next_observation()
-        reward = 0
+        reward, done_act, context = self.context.act(action, obs)
         info = {}
-        return obs, reward, done, info
+        return (obs, reward, done, info)
