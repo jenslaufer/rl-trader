@@ -2,4 +2,4 @@
 .pytest_cache/
 src/rltrader/__pycache__/
 test/__pycache__/
-src/rltrader/data/
+src/data/
