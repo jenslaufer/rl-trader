@@ -24,7 +24,7 @@ class DataSpace(Space):
         self.data = data
         self.history_lookback = history_lookback
         observation_space = spaces.Box(
-            low=0, high=1, shape=(len(data.columns), history_lookback+1))
+            low=0, high=1, shape=(history_lookback+1, len(data.columns)))
         super().__init__(action_space, observation_space)
         self.__reset()
 
@@ -44,6 +44,7 @@ class DataSpace(Space):
             obs = self.data[self.current_index -
                             self.history_lookback - 1: self.current_index]
             scaled_obs = self.__scaler.fit_transform(obs)
+            obs = obs.values
         if self.current_index >= len(self.data):
             done = True
 
