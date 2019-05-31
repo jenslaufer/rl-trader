@@ -72,7 +72,7 @@ def test_step():
     print(info)
     assert reward == 0
     assert done == False
-    assert info == {'done': [False, True, False], 'current_index': 1}
+    assert info == {'bla': 1}
     assert np.allclose(obs, expected)
 
     expected = np.array([[0.25, 0.9],
@@ -85,7 +85,7 @@ def test_step():
 
     assert reward == 0
     assert done == True
-    assert info == {'done': [False, True, False], 'current_index': 2}
+    assert info == {'bla': 2}
     assert np.allclose(obs, expected)
 
 

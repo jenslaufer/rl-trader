@@ -13,7 +13,6 @@ def test_init():
     price_col_index = 3
     context = get_context(fundings, trading_loss_pct, price_col_index)
 
-    assert context.initial_fundings == fundings
     assert context.trading_loss_pct == trading_loss_pct
     assert context.balance == fundings
     assert context.asset_balance == 0
@@ -29,23 +28,32 @@ def test_act_buy_sell():
     action = 1
     obs = np.array([[10, 100], [6, 75], [2, 0]])
 
-    done_act = context.act(action, obs)
+    done_act, context_data = context.act(action, obs)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
+    assert context_data == {'trading_loss_pct': 0.001, 'balance': 0, 'asset_balance': 49950.0,
+                            'price_col_index': 0, 'fees': 100.0, 'price': 2,
+                            'old_balance': 100000, 'old_asset_balance': 0}
 
     action = 0
     obs = np.array([[100, 1000], [7, 751], [32, 100]])
 
-    done_act = context.act(action, obs)
+    done_act, context_data = context.act(action, obs)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
+    assert context_data == {'trading_loss_pct': 0.001, 'balance': 0, 'asset_balance': 49950.0,
+                            'price_col_index': 0, 'fees': 0, 'price': 32,
+                            'old_balance': 0, 'old_asset_balance': 49950.0}
 
     action = 2
-
     obs = np.array([[6, 75], [2, 0], [5, 9]])
-    done_act = context.act(action, obs)
+    done_act, context_data = context.act(action, obs)
+    print(context_data)
     assert not done_act
     assert context.balance == 249500.25
     assert context.asset_balance == 0
+    assert context_data == {'trading_loss_pct': 0.001, 'balance': 249500.25, 'asset_balance': 0.0,
+                            'price_col_index': 0, 'fees': 249.75, 'price': 5,
+                            'old_balance': 0, 'old_asset_balance': 49950.0}

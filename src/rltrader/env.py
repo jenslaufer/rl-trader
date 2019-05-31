@@ -16,9 +16,8 @@ class Env(BaseEnv):
 
     def step(self, action):
         obs, scaled_obs, done = self.space.next_observation()
-        context_before_action = self.context
-        done_act = self.context.act(action, obs)
-        context_after_action = self.context
+
+        done_act, context_data = self.context.act(action, obs)
         reward = 0
 
-        return (scaled_obs, reward, (done | done_act), vars(context_after_action))
+        return (scaled_obs, reward, (done | done_act), context_data)
