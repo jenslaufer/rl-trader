@@ -1,18 +1,38 @@
 import context
 from rltrader import env as rlenvs
 from rltrader import spaces as rlspaces
-from rltrader import context as rlcontexts
+from rltrader import context as rlcontext
 from gym import spaces
 import pandas as pd
 import numpy as np
 
 
+class DummyContext(rlcontext.Context):
+
+    def __init__(self):
+        self.done = [False, True, False]
+        self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, ]
+        self.current_index = 0
+
+    def act(self, action, observation):
+        done = False
+        done = self.done[self.current_index]
+        context_data = self.context_data[self.current_index]
+        self.current_index += 1
+
+        return done, context_data
+
+
+def dummy(old_context, new_context, obs):
+    return 23
+
+
 def get_context():
-    return rlcontexts.DummyContext()
+    return DummyContext()
 
 
 def get_env(space, context):
-    return rlenvs.Env(space=space, context=context)
+    return rlenvs.Env(space=space, context=context, reward=dummy)
 
 
 def get_data_space(lookback, action_space):
@@ -70,7 +90,7 @@ def test_step():
     action = 1
     obs, reward, done, info = env.step(action)
     print(info)
-    assert reward == 0
+    assert reward == 23
     assert done == False
     assert info == {'bla': 1}
     assert np.allclose(obs, expected)
@@ -83,7 +103,7 @@ def test_step():
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert reward == 0
+    assert reward == 23
     assert done == True
     assert info == {'bla': 2}
     assert np.allclose(obs, expected)

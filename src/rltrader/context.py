@@ -4,22 +4,6 @@ class Context:
         return (0, False)
 
 
-class DummyContext(Context):
-
-    def __init__(self):
-        self.done = [False, True, False]
-        self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, ]
-        self.current_index = 0
-
-    def act(self, action, observation):
-        done = False
-        done = self.done[self.current_index]
-        context_data = self.context_data[self.current_index]
-        self.current_index += 1
-
-        return done, context_data
-
-
 class TradingContext(Context):
 
     def __init__(self, initial_fundings, trading_loss_pct, price_col_index):
