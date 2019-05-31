@@ -11,16 +11,17 @@ class DummyContext(rlcontext.Context):
 
     def __init__(self):
         self.done = [False, True, False]
-        self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, ]
+        self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, {"bla": 4}, ]
         self.current_index = 0
+        self.state = self.context_data[self.current_index]
 
     def act(self, action, observation):
         done = False
         done = self.done[self.current_index]
-        context_data = self.context_data[self.current_index]
         self.current_index += 1
+        self.state = self.context_data[self.current_index]
 
-        return done, context_data
+        return done
 
 
 def dummy(old_context, new_context, obs):
@@ -89,10 +90,9 @@ def test_step():
                          [0.33333333, 0.47916667]])
     action = 1
     obs, reward, done, info = env.step(action)
-    print(info)
     assert reward == 23
     assert done == False
-    assert info == {'bla': 1}
+    assert info == {'bla': 2}
     assert np.allclose(obs, expected)
 
     expected = np.array([[0.25, 0.9],
@@ -105,7 +105,7 @@ def test_step():
 
     assert reward == 23
     assert done == True
-    assert info == {'bla': 2}
+    assert info == {'bla': 3}
     assert np.allclose(obs, expected)
 
 

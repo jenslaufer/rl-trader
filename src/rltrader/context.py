@@ -12,12 +12,16 @@ class TradingContext(Context):
         self.asset_balance = 0
         self.price_col_index = price_col_index
 
+        self.state = {}
+        self.state['fees'] = None
+        self.state['price'] = None
+        self.state['balance'] = self.balance
+        self.state['asset_balance'] = self.asset_balance
+
     def act(self, action, obs):
         done = False
         price = obs[len(obs) - 1][self.price_col_index]
         fees = 0
-        old_balance = self.balance
-        old_asset_balance = self.asset_balance
 
         if action == 1:
             if self.balance > 0:
@@ -30,10 +34,9 @@ class TradingContext(Context):
             self.balance = sold - fees
             self.asset_balance -= self.asset_balance
 
-        context_data = vars(self)
-        context_data['fees'] = fees
-        context_data['price'] = price
-        context_data['old_balance'] = old_balance
-        context_data['old_asset_balance'] = old_asset_balance
+        self.state['fees'] = fees
+        self.state['price'] = price
+        self.state['balance'] = self.balance
+        self.state['asset_balance'] = self.asset_balance
 
-        return (done, context_data)
+        return done
