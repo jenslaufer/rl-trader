@@ -69,10 +69,10 @@ def test_step():
                          [0.33333333, 0.47916667]])
     action = 1
     obs, reward, done, info = env.step(action)
-
-    assert reward == 8
+    print(info)
+    assert reward == 0
     assert done == False
-    assert info == {"b": "blubb"}
+    assert info == {'done': [False, True, False], 'current_index': 1}
     assert np.allclose(obs, expected)
 
     expected = np.array([[0.25, 0.9],
@@ -83,9 +83,9 @@ def test_step():
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert reward == 2
+    assert reward == 0
     assert done == True
-    assert info == {"b": "blabb"}
+    assert info == {'done': [False, True, False], 'current_index': 2}
     assert np.allclose(obs, expected)
 
 
