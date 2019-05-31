@@ -120,3 +120,18 @@ def test_step_done():
     for n in range(3):
         obs, reward, done, info = env.step(1)
     assert done
+
+
+def test_history():
+    lookback = 3
+    action_space = spaces.Discrete(2)
+
+    space = get_data_space(lookback, action_space)
+    context = get_context()
+    env = get_env(space, context)
+    action = 1
+    obs, reward, done, info = env.step(action)
+    action = 1
+    obs, reward, done, info = env.step(action)
+    
+    assert env.history() == [{'bla': 1}, {'bla': 2}, {'bla': 3}]

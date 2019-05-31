@@ -9,6 +9,8 @@ class Env(BaseEnv):
         self.space = space
         self.context = context
         self.reward = reward
+        self.states = []
+        self.states.append(self.context.state)
 
     def reset(self):
         obs, scaled_obs, done = self.space.next_observation()
@@ -21,5 +23,9 @@ class Env(BaseEnv):
         done_act = self.context.act(action, obs)
         current_state = self.context.state
         reward = self.reward(old_state, current_state, obs)
+        self.states.append(self.context.state)
 
         return (scaled_obs, reward, (done | done_act), current_state)
+
+    def history(self):
+        return self.states
