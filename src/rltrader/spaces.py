@@ -26,9 +26,9 @@ class DataSpace(Space):
         observation_space = spaces.Box(
             low=0, high=1, shape=(history_lookback+1, len(data.columns)))
         super().__init__(action_space, observation_space)
-        self.__reset()
+        self.reset()
 
-    def __reset(self):
+    def reset(self):
         if self.__random_start:
             self.current_index = random.randint(
                 self.history_lookback, len(self.data))

@@ -18,14 +18,18 @@ class Env(BaseEnv):
         return scaled_obs
 
     def step(self, action):
-        obs, scaled_obs, done = self.space.next_observation()
+        obs, scaled_obs, done_obs = self.space.next_observation()
         old_state = self.context.state
         done_act = self.context.act(action, obs)
         current_state = self.context.state
         reward = self.reward(old_state, current_state, obs)
         self.states.append(self.context.state)
 
-        return (scaled_obs, reward, (done | done_act), current_state)
+        done = (done_obs | done_act)
+        if done:
+            self.space.reset()
+
+        return (scaled_obs, reward, done, current_state)
 
     def history(self):
         return self.states

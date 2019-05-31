@@ -10,7 +10,7 @@ import numpy as np
 class DummyContext(rlcontext.Context):
 
     def __init__(self):
-        self.done = [False, True, False]
+        self.done = [False, True, True]
         self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, {"bla": 4}, ]
         self.current_index = 0
         self.state = self.context_data[self.current_index]
@@ -119,6 +119,7 @@ def test_step_done():
 
     for n in range(3):
         obs, reward, done, info = env.step(1)
+    print(obs)
     assert done
 
 
@@ -133,5 +134,5 @@ def test_history():
     obs, reward, done, info = env.step(action)
     action = 1
     obs, reward, done, info = env.step(action)
-    
+
     assert env.history() == [{'bla': 1}, {'bla': 2}, {'bla': 3}]
