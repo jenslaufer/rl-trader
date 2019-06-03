@@ -13,15 +13,14 @@ class DummyContext(rlcontext.Context):
         self.done = [False, True, True]
         self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, {"bla": 4}, ]
         self.current_index = 0
-        self.state = self.context_data[self.current_index]
 
     def act(self, action, observation):
-        done = False
         done = self.done[self.current_index]
+        old_state = self.context_data[self.current_index]
         self.current_index += 1
-        self.state = self.context_data[self.current_index]
+        current_state = self.context_data[self.current_index]
 
-        return done
+        return done, old_state, current_state, observation
 
 
 def dummy(old_context, new_context, obs):

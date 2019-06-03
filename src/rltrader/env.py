@@ -10,7 +10,6 @@ class Env(BaseEnv):
         self.context = context
         self.reward = reward
         self.states = []
-        self.states.append(self.context.state)
 
     def reset(self):
         obs, scaled_obs, done = self.space.next_observation()
@@ -19,11 +18,14 @@ class Env(BaseEnv):
 
     def step(self, action):
         obs, scaled_obs, done_obs = self.space.next_observation()
-        old_state = self.context.state
-        done_act = self.context.act(action, obs)
-        current_state = self.context.state
+
+        done_act, old_state, current_state, obs = self.context.act(action, obs)
+
+        if len(self.states) == 0:
+            self.states.append(old_state)
+        self.states.append(current_state)
+
         reward = self.reward(old_state, current_state, obs)
-        self.states.append(self.context.state)
 
         done = (done_obs | done_act)
         if done:

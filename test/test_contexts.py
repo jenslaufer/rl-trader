@@ -28,28 +28,34 @@ def test_act_buy_sell():
     action = 1
     obs = np.array([[10, 100], [6, 75], [2, 0]])
 
-    done_act = context.act(action, obs)
+    done_act, old_state, current_state, obs = context.act(action, obs)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
-    assert context.state == {'fees': 100.0, 'price': 2,
+    assert old_state == {'fees': 0, 'price': 0,
+                         'balance': fundings, 'asset_balance': 0}
+    print(current_state)
+    assert current_state == {'fees': 100.0, 'price': 2,
                              'balance': 0, 'asset_balance': 49950.0}
     action = 0
     obs = np.array([[100, 1000], [7, 751], [32, 100]])
 
-    done_act = context.act(action, obs)
-    print(context.state)
+    done_act, old_state, current_state, obs = context.act(action, obs)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
-    assert context.state == {'fees': 0, 'price': 32,
+    assert old_state == {'fees': 100.0, 'price': 2,
+                         'balance': 0, 'asset_balance': 49950.0}
+    assert current_state == {'fees': 0, 'price': 32,
                              'balance': 0, 'asset_balance': 49950.0}
 
     action = 2
     obs = np.array([[6, 75], [2, 0], [5, 9]])
-    done_act = context.act(action, obs)
-    print(context.state)
+    done_act, old_state, current_state, obs = context.act(action, obs)
     assert not done_act
     assert context.balance == 249500.25
     assert context.asset_balance == 0
-    assert context.state == {'fees': 249.75, 'price': 5, 'balance': 249500.25, 'asset_balance': 0.0}
+    assert old_state == {'fees': 0, 'price': 32,
+                         'balance': 0, 'asset_balance': 49950.0}
+    assert current_state == {'fees': 249.75, 'price': 5,
+                             'balance': 249500.25, 'asset_balance': 0.0}
