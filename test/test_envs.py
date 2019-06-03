@@ -91,7 +91,7 @@ def test_step():
     obs, reward, done, info = env.step(action)
     assert reward == 23
     assert done == False
-    assert info == {'bla': 2}
+    assert info == {'bla': 2, 'reward': 23, 'action': 1}
     assert np.allclose(obs, expected)
 
     expected = np.array([[0.25, 0.9],
@@ -104,7 +104,7 @@ def test_step():
 
     assert reward == 23
     assert done == True
-    assert info == {'bla': 3}
+    assert info == {'bla': 3, 'reward': 23, 'action': 1}
     assert np.allclose(obs, expected)
 
 
@@ -134,4 +134,6 @@ def test_history():
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert env.history() == [{'bla': 1}, {'bla': 2}, {'bla': 3}]
+    assert env.history() == [{'bla': 1},
+                             {'bla': 2, 'reward': 23, 'action': 1},
+                             {'bla': 3, 'reward': 23, 'action': 1}]

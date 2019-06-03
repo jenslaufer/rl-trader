@@ -23,6 +23,7 @@ class Env(BaseEnv):
 
         if len(self.states) == 0:
             self.states.append(old_state)
+
         self.states.append(current_state)
 
         reward = self.reward(old_state, current_state, obs)
@@ -30,6 +31,9 @@ class Env(BaseEnv):
         done = (done_obs | done_act)
         if done:
             self.space.reset()
+
+        current_state['reward'] = reward
+        current_state['action'] = action
 
         return (scaled_obs, reward, done, current_state)
 

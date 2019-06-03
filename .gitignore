@@ -3,3 +3,5 @@
 src/rltrader/__pycache__/
 test/__pycache__/
 src/data/
+src/tensorboard/
+src/train.csv

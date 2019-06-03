@@ -75,25 +75,25 @@ def do_train():
     memory = SequentialMemory(limit=1000000, window_length=WINDOW_LENGTH)
 
     policy = LinearAnnealedPolicy(EpsGreedyQPolicy(), attr='eps', value_max=1., value_min=.1, value_test=.05,
-                                  nb_steps=1000000)
+                                  nb_steps=10)
 
-    dqn = DQNAgent(model=model, nb_actions=2, memory=memory, nb_steps_warmup=10,
+    dqn = DQNAgent(model=model, nb_actions=2, memory=memory, nb_steps_warmup=20,
                    target_model_update=1e-2, policy=policy, enable_dueling_network=True, enable_double_dqn=True)
 
     dqn.compile(Adam(lr=1e-3), metrics=['mae'])
 
     dqn.fit(env, nb_steps=nums_testset, log_interval=50)
 
-    pd.DataFrame(env.history).to_csv("train.csv")
+    pd.DataFrame(env.history()).to_csv("train.csv")
 
     space = DataSpace(spaces.Discrete(3), 70, test_df)
     context = TradingContext(100000, 0.005, 3)
 
     test_env = TradingEnv(space=space, context=context,
                           reward=net_value_reward)
-    dqn.test(test_env, nb_episodes=1000, visualize=True)
+    dqn.test(test_env, nb_episodes=1000, visualize=False)
 
-    pd.DataFrame(test_env.history).to_csv("test.csv")
+    pd.DataFrame(test_env.history()).to_csv("test.csv")
 
 
 if __name__ == '__main__':
