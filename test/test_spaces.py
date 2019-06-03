@@ -33,7 +33,7 @@ def test_data_space_reset_unrandom():
     space = get_space(action_space, lookback, False, None)
 
     assert space.action_space == action_space
-    assert space.current_index == (len(df) - lookback) + 1
+    assert space.current_index == lookback + 1
 
 
 def test_data_space_reset_random():

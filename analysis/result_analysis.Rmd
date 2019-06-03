@@ -1,0 +1,72 @@
+---
+title: "Analysis Reinforcement Results"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F,
+                      message = F,
+                      warning = F)
+```
+```{r}
+library(tidyverse)
+library(glue)
+```
+
+
+```{r}
+LOGS_DIR = '../src'
+DATA_DIR = '../data'
+```
+
+
+```{r}
+load <- function(filename) {
+  return(read_csv(filename) %>%
+           mutate(net_worth=balance+asset_balance * price) %>%
+           mutate(step = X1) %>%
+           select(-X1) %>%
+           filter(price > 0))
+}
+```
+
+
+
+
+```{r}
+vis.df = function(df) {
+  df %>%
+    gather(-step, key = "feature", value = "value") %>%
+    ggplot(aes(x = step, y = value)) +
+    geom_line() +
+    facet_wrap(~ feature, scales = 'free')
+}
+```
+
+
+```{r}
+train.df <- load(glue('{LOGS_DIR}/train.csv'))
+```
+
+```{r fig.height=10, fig.width=20}
+vis.df(train.df)
+```
+
+
+
+
+```{r}
+test.df <- load(glue('{LOGS_DIR}/test.csv'))
+```
+
+
+```{r fig.height=10, fig.width=20}
+vis.df(test.df)
+```
+
+```{r}
+train.df %>%
+  ggplot(aes(x=step, y=price)) +
+  geom_line()
+```
+

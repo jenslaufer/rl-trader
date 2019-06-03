@@ -15,19 +15,15 @@ class TradingContext(Context):
         self.price_col_index = price_col_index
 
     def _get_state(self):
-        state = {}
-        state['fees'] = self.fees
-        state['price'] = self.price
-        state['balance'] = self.balance
-        state['asset_balance'] = self.asset_balance
-
-        return state
+        return {'fees': self.fees,
+                'price': self.price,
+                'balance': self.balance,
+                'asset_balance': self.asset_balance}
 
     def act(self, action, obs):
-
         old_state = self._get_state()
-
         done = False
+
         self.price = obs[len(obs) - 1][self.price_col_index]
         self.fees = 0
 

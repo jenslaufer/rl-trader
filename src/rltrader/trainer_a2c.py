@@ -25,10 +25,10 @@ def split_train_test(num):
 
 
 def do_train():
-    nums_testset = 20000
+    nums_testset = 200000
     train_df, test_df = split_train_test(nums_testset)
 
-    env = TradingEnv(space=DataSpace(spaces.Discrete(3), 70, train_df),
+    env = TradingEnv(space=DataSpace(spaces.Discrete(3), 70, train_df, random_start=True),
                      context=TradingContext(100000, 0.005, 3),
                      reward=net_value_reward)
 
