@@ -8,11 +8,16 @@ class TradingContext(Context):
 
     def __init__(self, initial_fundings, trading_loss_pct, price_col_index):
         self.trading_loss_pct = trading_loss_pct
-        self.balance = initial_fundings
+        self.initial_fundings = initial_fundings
+        self.price_col_index = price_col_index
+        self.reset()
+
+    def reset(self):
+        self.balance = self.initial_fundings
         self.asset_balance = 0
         self.fees = 0
         self.price = 0
-        self.price_col_index = price_col_index
+        self.price_col_index = self.price_col_index
 
     def _get_state(self):
         return {'fees': self.fees,

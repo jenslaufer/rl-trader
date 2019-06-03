@@ -21,16 +21,18 @@ class Env(BaseEnv):
 
         done_act, old_state, current_state, obs = self.context.act(action, obs)
 
+        done = (done_obs | done_act)
+
         if len(self.states) == 0:
             self.states.append(old_state)
 
         self.states.append(current_state)
 
-        reward = self.reward(old_state, current_state, obs)
+        reward = self.reward(old_state, current_state, obs, done)
 
-        done = (done_obs | done_act)
         if done:
             self.space.reset()
+            self.context.reset()
 
         current_state['reward'] = reward
         current_state['action'] = action

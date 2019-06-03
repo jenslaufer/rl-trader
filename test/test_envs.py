@@ -22,8 +22,11 @@ class DummyContext(rlcontext.Context):
 
         return done, old_state, current_state, observation
 
+    def reset(self):
+        self.current_index = 0
 
-def dummy(old_context, new_context, obs):
+
+def dummy(old_context, new_context, obs, done):
     return 23
 
 
@@ -119,7 +122,7 @@ def test_step_done():
     for n in range(3):
         obs, reward, done, info = env.step(1)
     print(obs)
-    assert done
+    assert not done
 
 
 def test_history():

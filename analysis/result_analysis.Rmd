@@ -22,13 +22,18 @@ DATA_DIR = '../data'
 
 ```{r}
 load <- function(filename) {
-  return(read_csv(filename) %>%
-           mutate(net_worth=balance+asset_balance * price) %>%
-           mutate(step = X1) %>%
-           select(-X1) %>%
-           filter(price > 0))
+  return(
+    read_csv(filename) %>%
+      mutate(action=as.factor(action)) %>%
+      mutate(net_worth = balance + asset_balance * price) %>%
+      mutate(step = X1) %>%
+      select(-X1) %>%
+      filter(price > 0)
+  )
 }
 ```
+
+
 
 
 
@@ -36,10 +41,10 @@ load <- function(filename) {
 ```{r}
 vis.df = function(df) {
   df %>%
-    gather(-step, key = "feature", value = "value") %>%
+    gather(-step, -action, key = "feature", value = "value") %>%
     ggplot(aes(x = step, y = value)) +
     geom_line() +
-    facet_wrap(~ feature, scales = 'free')
+    facet_wrap( ~ feature, scales = 'free')
 }
 ```
 
