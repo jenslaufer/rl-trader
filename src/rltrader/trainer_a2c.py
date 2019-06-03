@@ -28,21 +28,21 @@ def do_train():
     nums_testset = 200000
     train_df, test_df = split_train_test(nums_testset)
 
-    env = TradingEnv(space=DataSpace(spaces.Discrete(3), 70, train_df, random_start=True, max_steps=500),
+    env = TradingEnv(space=DataSpace(spaces.Discrete(3), 70, train_df, random_start=True, max_steps=200),
                      context=TradingContext(100000, 0.005, 3),
-                     reward=end_net_value_reward)
+                     reward=net_value_reward)
 
     train_env = DummyVecEnv([lambda:env])
 
     model = A2C(MlpPolicy, train_env, verbose=1,
                 tensorboard_log="./tensorboard/")
-    model.learn(total_timesteps=100000)
+    model.learn(total_timesteps=200000)
     train_env.close()
-    pd.DataFrame(env.history()).to_csv("train.csv")
+    pd.DataFrame(env.states).to_csv("train.csv")
 
     env = TradingEnv(space=DataSpace(spaces.Discrete(3), 70, test_df),
                      context=TradingContext(100000, 0.005, 3),
-                     reward=end_net_value_reward)
+                     reward=net_value_reward)
 
     test_env = DummyVecEnv([lambda:env])
 
@@ -52,7 +52,7 @@ def do_train():
         obs, rewards, done, info = test_env.step(action)
 
     test_env.close()
-    pd.DataFrame(env.history()).to_csv("test.csv")
+    pd.DataFrame(env.states.to_csv("test.csv")
 
 
 if __name__ == '__main__':

@@ -137,6 +137,6 @@ def test_history():
     action = 1
     obs, reward, done, info = env.step(action)
 
-    assert env.history() == [{'bla': 1},
+    assert env.states == [{'bla': 1},
                              {'bla': 2, 'reward': 23, 'action': 1},
                              {'bla': 3, 'reward': 23, 'action': 1}]

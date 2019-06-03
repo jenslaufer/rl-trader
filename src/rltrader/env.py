@@ -38,6 +38,3 @@ class Env(BaseEnv):
         current_state['action'] = action
 
         return (scaled_obs, reward, done, current_state)
-
-    def history(self):
-        return self.states

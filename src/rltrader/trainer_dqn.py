@@ -84,7 +84,7 @@ def do_train():
 
     dqn.fit(env, nb_steps=nums_testset, log_interval=50)
 
-    pd.DataFrame(env.history()).to_csv("train.csv")
+    pd.DataFrame(env.states).to_csv("train.csv")
 
     space = DataSpace(spaces.Discrete(3), 70, test_df)
     context = TradingContext(100000, 0.005, 3)
@@ -93,7 +93,7 @@ def do_train():
                           reward=net_value_reward)
     dqn.test(test_env, nb_episodes=1000, visualize=False)
 
-    pd.DataFrame(test_env.history()).to_csv("test.csv")
+    pd.DataFrame(test_env.states).to_csv("test.csv")
 
 
 if __name__ == '__main__':
