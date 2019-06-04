@@ -28,7 +28,7 @@ class Env(BaseEnv):
 
         self.states.append(current_state)
 
-        reward = self.reward(old_state, current_state, obs, done)
+        reward = self.reward(old_state, current_state, action, obs, done)
 
         if done:
             self.space.reset()

@@ -26,7 +26,7 @@ class DummyContext(rlcontext.Context):
         self.current_index = 0
 
 
-def dummy(old_context, new_context, obs, done):
+def dummy(old_context, new_context, action, obs, done):
     return 23
 
 
@@ -138,5 +138,5 @@ def test_history():
     obs, reward, done, info = env.step(action)
 
     assert env.states == [{'bla': 1},
-                             {'bla': 2, 'reward': 23, 'action': 1},
-                             {'bla': 3, 'reward': 23, 'action': 1}]
+                          {'bla': 2, 'reward': 23, 'action': 1},
+                          {'bla': 3, 'reward': 23, 'action': 1}]
