@@ -32,8 +32,16 @@ def test_data_space_reset_unrandom():
     lookback = 2
     space = get_space(action_space, lookback, False, None)
 
-    assert space.action_space == action_space
+    expected_unscaled_0 = np.array([[7, 52], [4, 90], [10, 100]])
+
     assert space.current_index == lookback + 1
+    unscaled_obs, obs, done = space.next_observation()
+
+    assert space.action_space == action_space
+    assert np.allclose(unscaled_obs, expected_unscaled_0)
+    assert not done
+    assert space.current_index == lookback + 2
+    assert space.end == len(df)
 
 
 def test_data_space_reset_random():
