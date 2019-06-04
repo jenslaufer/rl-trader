@@ -37,7 +37,7 @@ def test_act_buy_sell():
     print(current_state)
     assert current_state == {'fees': 100.0, 'price': 2,
                              'balance': 0, 'asset_balance': 49950.0}
-    action = 0
+    action = context.BUY
     obs = np.array([[100, 1000], [7, 751], [32, 100]])
 
     done_act, old_state, current_state, obs = context.act(action, obs)
@@ -49,7 +49,7 @@ def test_act_buy_sell():
     assert current_state == {'fees': 0, 'price': 32,
                              'balance': 0, 'asset_balance': 49950.0}
 
-    action = 2
+    action = context.SELL
     obs = np.array([[6, 75], [2, 0], [5, 9]])
     done_act, old_state, current_state, obs = context.act(action, obs)
     assert not done_act

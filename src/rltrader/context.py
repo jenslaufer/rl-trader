@@ -5,6 +5,9 @@ class Context:
 
 
 class TradingContext(Context):
+    HOLD = 0
+    BUY = 1
+    SELL = 2
 
     def __init__(self, initial_fundings, trading_loss_pct, price_col_index):
         self.trading_loss_pct = trading_loss_pct
@@ -18,7 +21,6 @@ class TradingContext(Context):
         self.asset_balance = 0
         self.fees = 0
         self.price = 0
-        self.price_col_index = self.price_col_index
 
     def _get_state(self):
         return {'fees': self.fees,
@@ -33,12 +35,12 @@ class TradingContext(Context):
         self.price = obs[len(obs) - 1][self.price_col_index]
         self.fees = 0
 
-        if action == 1:
+        if action == self.BUY:
             if self.balance > 0:
                 self.fees = self.balance * self.trading_loss_pct
                 self.asset_balance = (self.balance - self.fees)/self.price
                 self.balance -= self.balance
-        elif action == 2:
+        elif action == self.SELL:
             if self.asset_balance > 0:
                 sold = self.asset_balance * self.price
                 self.fees = sold * self.trading_loss_pct

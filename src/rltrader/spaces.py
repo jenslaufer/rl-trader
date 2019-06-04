@@ -31,7 +31,6 @@ class LookbackWindowDataSpace(Space):
         self.reset()
 
     def reset(self):
-        print("===Space reset===")
         if self.__random_start:
             self.current_index = random.randint(
                 self.history_lookback, len(self.data))
@@ -41,6 +40,9 @@ class LookbackWindowDataSpace(Space):
         self.end = self.current_index + self.max_steps
         if not self.__random_start or (self.end >= len(self.data)):
             self.end = len(self.data)
+
+        print("===Space reset: start:{} end:{}===".format(
+            self.current_index, self.end))
 
     def next_observation(self):
         done = False

@@ -121,8 +121,7 @@ def test_step_done():
 
     for n in range(3):
         obs, reward, done, info = env.step(1)
-    print(obs)
-    assert not done
+    assert done
 
 
 def test_history():

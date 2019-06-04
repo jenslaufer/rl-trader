@@ -13,7 +13,11 @@ class Env(BaseEnv):
         self.states = []
 
     def reset(self):
-        print("===Env reset===")
+        print("\n\n===Env reset===")
+
+        self.context.reset()
+        self.space.reset()
+
         obs, scaled_obs, done = self.space.next_observation()
 
         return scaled_obs
@@ -31,10 +35,6 @@ class Env(BaseEnv):
         self.states.append(current_state)
 
         reward = self.reward(old_state, current_state, action, obs, done)
-
-        if done:
-            self.space.reset()
-            self.context.reset()
 
         current_state['reward'] = reward
         current_state['action'] = action
