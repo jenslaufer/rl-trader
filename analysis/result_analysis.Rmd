@@ -16,7 +16,7 @@ library(glue)
 
 ```{r}
 LOGS_DIR = '../src'
-DATA_DIR = '../data'
+DATA_DIR = '../src/data'
 ```
 
 
@@ -48,6 +48,10 @@ vis.df = function(df) {
 }
 ```
 
+```{r}
+df <- read_csv(glue('{DATA_DIR}/btc.csv'))
+```
+
 
 ```{r}
 train.df <- load(glue('{LOGS_DIR}/train.csv'))
@@ -77,7 +81,14 @@ test.df %>%
 
 
 ```{r}
-test.df %>% tail(1000)
+test.df %>% tail(100)
 ```
 
+```{r}
+test.df %>% filter(done==T)
+```
+
+```{r}
+test.df %>% dim()
+```
 
