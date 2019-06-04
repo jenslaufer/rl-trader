@@ -27,13 +27,14 @@ def split_train_test(num):
 def do_train():
     action_space = spaces.Discrete(3)
     history_lookback = 70
-    max_steps = 2000
+    max_steps = 1140
     initial_fundings = 100000
     trading_loss_pct = 0.005
     price_col_index = 3
     total_timesteps = 200000
     reward_fct = net_value_reward_wrong_action_penalty
-    nums_testset = 200000
+
+    nums_testset = 259200
     train_df, test_df = split_train_test(nums_testset)
 
     env = TradingEnv(space=LookbackWindowDataSpace(action_space=action_space,
@@ -54,6 +55,8 @@ def do_train():
     model.learn(total_timesteps=total_timesteps)
     train_env.close()
     pd.DataFrame(env.states).to_csv("train.csv")
+    print("=================================")
+    print("Model trained.")
 
     env = TradingEnv(space=LookbackWindowDataSpace(action_space=action_space,
                                                    history_lookback=history_lookback,
@@ -67,7 +70,8 @@ def do_train():
     test_env = DummyVecEnv([lambda:env])
 
     obs = test_env.reset()
-    for i in range(nums_testset):
+    done = False
+    while not done:
         action, _states = model.predict(obs)
         obs, rewards, done, info = test_env.step(action)
 
