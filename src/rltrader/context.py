@@ -36,17 +36,26 @@ class TradingContext(Context):
         self.fees = 0
 
         if action == self.BUY:
-            if self.balance > 0:
-                self.fees = self.balance * self.trading_loss_pct
-                self.asset_balance = (self.balance - self.fees)/self.price
-                self.balance -= self.balance
+            self._buy()
         elif action == self.SELL:
-            if self.asset_balance > 0:
-                sold = self.asset_balance * self.price
-                self.fees = sold * self.trading_loss_pct
-                self.asset_balance -= self.asset_balance
-                self.balance = sold - self.fees
+            self._sell()
 
         current_state = self._get_state()
 
         return done, old_state, current_state, obs
+
+    def close(self):
+        self._sell()
+
+    def _buy(self):
+        if self.balance > 0:
+            self.fees = self.balance * self.trading_loss_pct
+            self.asset_balance = (self.balance - self.fees)/self.price
+            self.balance -= self.balance
+
+    def _sell(self):
+        if self.asset_balance > 0:
+            sold = self.asset_balance * self.price
+            self.fees = sold * self.trading_loss_pct
+            self.asset_balance -= self.asset_balance
+            self.balance = sold - self.fees
