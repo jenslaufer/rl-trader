@@ -59,3 +59,19 @@ def test_act_buy_sell():
                          'balance': 0, 'asset_balance': 49950.0}
     assert current_state == {'fees': 249.75, 'price': 5,
                              'balance': 249500.25, 'asset_balance': 0.0}
+
+
+def test_close():
+    fundings = 100000
+    trading_loss_pct = 0.001
+    price_col_index = 0
+    context = get_context(fundings, trading_loss_pct, price_col_index)
+
+    action = context.BUY
+    obs = np.array([[100, 1000], [7, 751], [32, 100]])
+    done_act, old_state, current_state, obs = context.act(action, obs)
+
+    assert context.balance == 0
+
+    context.close()
+    assert context.balance == 99800.1
