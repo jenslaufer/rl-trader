@@ -57,12 +57,6 @@ train.df <- load(glue('{LOGS_DIR}/train.csv'))
 vis.df(train.df)
 ```
 
-```{r}
-train.df %>%
-  ggplot(aes(x=step, y=net_worth)) +
-           geom_line() +
-  scale_x_continuous(limit=c(150000,200000))
-```
 
 
 
@@ -81,14 +75,9 @@ test.df %>%
   geom_line()
 ```
 
-```{r}
-test.df %>% 
-  group_by(action) %>%
-  summarise(n=n())
-  
-```
 
 ```{r}
-test.df %>% filter(reward==0)
+test.df %>% tail(1000)
 ```
+
 

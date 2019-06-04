@@ -13,6 +13,7 @@ class TradingContext(Context):
         self.reset()
 
     def reset(self):
+        print("===Context Reset===")
         self.balance = self.initial_fundings
         self.asset_balance = 0
         self.fees = 0
@@ -41,8 +42,8 @@ class TradingContext(Context):
             if self.asset_balance > 0:
                 sold = self.asset_balance * self.price
                 self.fees = sold * self.trading_loss_pct
-                self.balance = sold - self.fees
                 self.asset_balance -= self.asset_balance
+                self.balance = sold - self.fees
 
         current_state = self._get_state()
 

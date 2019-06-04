@@ -27,10 +27,11 @@ def split_train_test(num):
 def do_train():
     action_space = spaces.Discrete(3)
     history_lookback = 70
-    max_steps = 500
+    max_steps = 2000
     initial_fundings = 100000
     trading_loss_pct = 0.005
     price_col_index = 3
+    total_timesteps = 200000
     reward_fct = net_value_reward_wrong_action_penalty
     nums_testset = 200000
     train_df, test_df = split_train_test(nums_testset)
@@ -50,7 +51,7 @@ def do_train():
 
     model = A2C(MlpPolicy, train_env, verbose=1,
                 tensorboard_log="./tensorboard/")
-    model.learn(total_timesteps=100000)
+    model.learn(total_timesteps=total_timesteps)
     train_env.close()
     pd.DataFrame(env.states).to_csv("train.csv")
 

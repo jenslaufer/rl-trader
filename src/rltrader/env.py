@@ -4,6 +4,7 @@ from gym import Env as BaseEnv
 class Env(BaseEnv):
 
     def __init__(self, space, context, reward):
+        super(Env, self).__init__()
         self.action_space = space.action_space
         self.observation_space = space.observation_space
         self.space = space
@@ -12,6 +13,7 @@ class Env(BaseEnv):
         self.states = []
 
     def reset(self):
+        print("===Env reset===")
         obs, scaled_obs, done = self.space.next_observation()
 
         return scaled_obs
@@ -36,5 +38,6 @@ class Env(BaseEnv):
 
         current_state['reward'] = reward
         current_state['action'] = action
+        current_state['done'] = done
 
         return (scaled_obs, reward, done, current_state)
