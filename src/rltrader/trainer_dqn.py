@@ -1,5 +1,5 @@
 from .env import Env as TradingEnv
-from .spaces import DataSpace
+from .spaces import LookbackWindowDataSpace
 from .context import TradingContext
 from .rewards import net_value_reward
 
@@ -64,7 +64,7 @@ def do_train():
     nums_testset = 20000
     train_df, test_df = split_train_test(nums_testset)
 
-    space = DataSpace(spaces.Discrete(3), 70, train_df)
+    space = LookbackWindowDataSpace(spaces.Discrete(3), 70, train_df)
     context = TradingContext(100000, 0.005, 3)
 
     env = TradingEnv(space=space, context=context, reward=net_value_reward)
@@ -86,7 +86,7 @@ def do_train():
 
     pd.DataFrame(env.states).to_csv("train.csv")
 
-    space = DataSpace(spaces.Discrete(3), 70, test_df)
+    space = LookbackWindowDataSpace(spaces.Discrete(3), 70, test_df)
     context = TradingContext(100000, 0.005, 3)
 
     test_env = TradingEnv(space=space, context=context,

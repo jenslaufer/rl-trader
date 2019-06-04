@@ -45,8 +45,8 @@ def get_data_space(lookback, action_space):
                        {'feature1': 6, 'feature2': 75},
                        {'feature1': 2, 'feature2': 0},
                        {'feature1': 1, 'feature2': 9}])
-    space = rlspaces.DataSpace(action_space=action_space, history_lookback=lookback,
-                               data=df)
+    space = rlspaces.LookbackWindowDataSpace(action_space=action_space, history_lookback=lookback,
+                                             data=df)
     return space
 
 

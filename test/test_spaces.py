@@ -23,8 +23,8 @@ def test_spaces():
 
 
 def get_space(action_space, lookback, random_start, seed):
-    return rlspaces.DataSpace(action_space=action_space, history_lookback=lookback,
-                              data=df, random_start=random_start, seed=seed)
+    return rlspaces.LookbackWindowDataSpace(action_space=action_space, history_lookback=lookback,
+                                            data=df, random_start=random_start, seed=seed)
 
 
 def test_data_space_reset_unrandom():

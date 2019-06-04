@@ -43,7 +43,7 @@ vis.df = function(df) {
   df %>%
     gather(-step, -action, key = "feature", value = "value") %>%
     ggplot(aes(x = step, y = value)) +
-    geom_point() +
+    geom_line() +
     facet_wrap( ~ feature, scales = 'free')
 }
 ```
@@ -80,13 +80,15 @@ test.df %>%
   ggplot(aes(x=step, y=price)) +
   geom_line()
 ```
-```{r}
-test.df
-```
+
 ```{r}
 test.df %>% 
   group_by(action) %>%
   summarise(n=n())
   
+```
+
+```{r}
+test.df %>% filter(reward==0)
 ```
 

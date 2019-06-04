@@ -13,7 +13,7 @@ class Space:
         return None
 
 
-class DataSpace(Space):
+class LookbackWindowDataSpace(Space):
 
     __scaler = preprocessing.MinMaxScaler()
 
