@@ -6,3 +6,7 @@ src/data/
 src/tensorboard/
 src/train.csv
 src/*.csv
+analysis/result_analysis_files/
+analysis/result_analysis.html
+analysis/.RData
+analysis/.Rhistory
