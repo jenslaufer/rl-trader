@@ -41,10 +41,10 @@ def net_value_reward_wrong_action_penalty(old, current, action, obs, done):
     reward = net_value_reward(old, current, action, obs, done)
 
     if action == 1:
-        if balance <= 0:
-            reward = -1000000
+        if balance == old_balance:
+            reward = reward-1000000
     elif action == 2:
-        if asset_balance <= 0:
-            reward = -1000000
+        if asset_balance == old_asset_balance:
+            reward = reward-1000000
 
     return reward

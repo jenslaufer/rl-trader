@@ -14,7 +14,9 @@ library(glue)
 ```
 
 
+
 ```{r}
+INDEX = ""
 LOGS_DIR = '../src'
 DATA_DIR = '../src/data'
 ```
@@ -27,7 +29,7 @@ load <- function(filename) {
       mutate(action=as.factor(action)) %>%
       mutate(net_worth = balance + asset_balance * price) %>%
       mutate(step = X1) %>%
-      select(-X1) %>%
+      select(-X1, -done) %>%
       filter(price > 0)
   )
 }
@@ -54,7 +56,7 @@ df <- read_csv(glue('{DATA_DIR}/btc.csv'))
 
 
 ```{r}
-train.df <- load(glue('{LOGS_DIR}/train.csv'))
+train.df <- load(glue('{LOGS_DIR}/train{INDEX}.csv'))
 ```
 
 ```{r fig.height=10, fig.width=20}
@@ -65,30 +67,34 @@ vis.df(train.df)
 
 
 ```{r}
-test.df <- load(glue('{LOGS_DIR}/test.csv'))
+test.df <- load(glue('{LOGS_DIR}/test{INDEX}.csv'))
 ```
 
 
-```{r fig.height=10, fig.width=20}
-vis.df(test.df)
+```{r fig.height=15, fig.width=20}
+test.df %>% vis.df()
 ```
+
 
 ```{r}
 test.df %>%
-  ggplot(aes(x=step, y=price)) +
-  geom_line()
+  group_by(action) %>%
+  summarise(n=n())
 ```
 
 
 ```{r}
-test.df %>% tail(100)
+profits <- test.df %>% 
+  mutate(diff = (balance - lag(balance))) %>% filter(diff > 0 | diff < 0) %>% select(step, diff)
 ```
 
 ```{r}
-test.df %>% filter(done==T)
+profits
 ```
 
 ```{r}
-test.df %>% dim()
+test.df %>% tail(10)
 ```
+
+
 

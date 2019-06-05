@@ -3,20 +3,22 @@ from gym import Env as BaseEnv
 
 class Env(BaseEnv):
 
-    def __init__(self, space, context, reward):
+    def __init__(self, space, context, reward, context_reset=True):
         super(Env, self).__init__()
         self.action_space = space.action_space
         self.observation_space = space.observation_space
         self.space = space
         self.context = context
         self.reward = reward
+        self.context_reset = context_reset
         self.states = []
 
     def reset(self):
         print("\n\n===Env reset===")
 
-        self.context.reset()
         self.space.reset()
+        if self.context_reset:
+            self.context.reset()
 
         obs, scaled_obs, done = self.space.next_observation()
 

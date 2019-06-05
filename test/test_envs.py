@@ -23,6 +23,7 @@ class DummyContext(rlcontext.Context):
         return done, old_state, current_state, observation
 
     def reset(self):
+        print("====reset context======")
         self.current_index = 0
 
 
@@ -34,8 +35,9 @@ def get_context():
     return DummyContext()
 
 
-def get_env(space, context):
-    return rlenvs.Env(space=space, context=context, reward=dummy)
+def get_env(space, context, context_reset=True):
+    return rlenvs.Env(space=space, context=context,
+                      reward=dummy, context_reset=context_reset)
 
 
 def get_data_space(lookback, action_space):
@@ -76,6 +78,29 @@ def test_reset():
                          [0.33333333, 0.47916667]])
     actual = env.reset()
     assert np.allclose(actual, expected)
+
+
+def test_context_reset():
+    lookback = 3
+    action_space = spaces.Discrete(2)
+
+    space = get_data_space(lookback, action_space)
+    context = get_context()
+
+    env = get_env(space, context)
+
+    env.step(1)
+    assert context.current_index == 1
+
+    env.reset()
+    assert context.current_index == 0
+
+    env = get_env(space, context, False)
+    env.step(1)
+    assert context.current_index == 1
+
+    env.reset()
+    assert context.current_index == 1
 
 
 def test_step():

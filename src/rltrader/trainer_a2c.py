@@ -27,11 +27,11 @@ def split_train_test(num):
 def do_train():
     action_space = spaces.Discrete(3)
     history_lookback = 70
-    max_steps = 1140
+    max_steps = 10080
     initial_fundings = 100000
     trading_loss_pct = 0.005
     price_col_index = 3
-    total_timesteps = 200000
+    total_timesteps = 201600
     reward_fct = net_value_reward_wrong_action_penalty
 
     nums_testset = 259200
@@ -58,14 +58,15 @@ def do_train():
     print("=================================")
     print("Model trained.")
 
+    trading_context = TradingContext(initial_fundings=initial_fundings,
+                                     trading_loss_pct=trading_loss_pct,
+                                     price_col_index=price_col_index)
     env = TradingEnv(space=LookbackWindowDataSpace(action_space=action_space,
                                                    history_lookback=history_lookback,
                                                    data=test_df),
-                     context=TradingContext(
-                         initial_fundings=initial_fundings,
-                         trading_loss_pct=trading_loss_pct,
-                         price_col_index=price_col_index),
-                     reward=reward_fct)
+                     context=trading_context,
+                     reward=reward_fct,
+                     context_reset=False)
 
     test_env = DummyVecEnv([lambda:env])
 
@@ -75,8 +76,9 @@ def do_train():
         action, _states = model.predict(obs)
         obs, rewards, done, info = test_env.step(action)
 
-    test_env.close()
     pd.DataFrame(env.states).to_csv("test.csv")
+    trading_context.sell()
+    print(trading_context.balance)
 
 
 if __name__ == '__main__':
