@@ -29,10 +29,7 @@ class TradingContext(Context):
         print("===Context Reset===")
 
     def _get_state(self):
-        return {'fees': self.fees,
-                'price': self.price,
-                'balance': self.balance,
-                'asset_balance': self.asset_balance}
+        return dict(vars(self))
 
     def act(self, action, obs, obs_scaled):
         old_state = self._get_state()
