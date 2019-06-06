@@ -14,13 +14,13 @@ class DummyContext(rlcontext.Context):
         self.context_data = [{"bla": 1}, {"bla": 2}, {"bla": 3}, {"bla": 4}, ]
         self.current_index = 0
 
-    def act(self, action, observation):
+    def act(self, action, observation, observation_scaled):
         done = self.done[self.current_index]
         old_state = self.context_data[self.current_index]
         self.current_index += 1
         current_state = self.context_data[self.current_index]
 
-        return done, old_state, current_state, observation
+        return done, old_state, current_state
 
     def reset(self):
         print("====reset context======")

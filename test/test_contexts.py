@@ -27,8 +27,10 @@ def test_act_buy_sell():
 
     action = 1
     obs = np.array([[10, 100], [6, 75], [2, 0]])
+    obs_scaled = np.array([[1, 1], [0.25, 0.75], [0, 0]])
 
-    done_act, old_state, current_state, obs = context.act(action, obs)
+    done_act, old_state, current_state = context.act(
+        action, obs, obs_scaled)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
@@ -39,8 +41,10 @@ def test_act_buy_sell():
                              'balance': 0, 'asset_balance': 49950.0}
     action = context.BUY
     obs = np.array([[100, 1000], [7, 751], [32, 100]])
+    obs_scaled = np.array([[1, 1], [0.25, 0.75], [0, 0]])
 
-    done_act, old_state, current_state, obs = context.act(action, obs)
+    done_act, old_state, current_state = context.act(
+        action, obs, obs_scaled)
     assert not done_act
     assert context.balance == 0
     assert context.asset_balance == 49950.0
@@ -51,7 +55,9 @@ def test_act_buy_sell():
 
     action = context.SELL
     obs = np.array([[6, 75], [2, 0], [5, 9]])
-    done_act, old_state, current_state, obs = context.act(action, obs)
+    obs_scaled = np.array([[1, 1], [0.25, 0.75], [0, 0]])
+    done_act, old_state, current_state = context.act(
+        action, obs, obs_scaled)
     assert not done_act
     assert context.balance == 249500.25
     assert context.asset_balance == 0
@@ -59,5 +65,3 @@ def test_act_buy_sell():
                          'balance': 0, 'asset_balance': 49950.0}
     assert current_state == {'fees': 249.75, 'price': 5,
                              'balance': 249500.25, 'asset_balance': 0.0}
-
-

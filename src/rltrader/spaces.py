@@ -17,7 +17,8 @@ class LookbackWindowDataSpace(Space):
 
     __scaler = preprocessing.MinMaxScaler()
 
-    def __init__(self, action_space, history_lookback, data, max_steps=6000, random_start=False, seed=None):
+    def __init__(self, action_space, history_lookback, data,
+                 max_steps=6000, random_start=False, seed=None, correct=0):
         if seed != None:
             random.seed(seed)
 
@@ -25,9 +26,11 @@ class LookbackWindowDataSpace(Space):
         self.data = data
         self.history_lookback = history_lookback
         self.max_steps = max_steps
+
         observation_space = spaces.Box(
-            low=0, high=1, shape=(history_lookback+1, len(data.columns)))
-        super().__init__(action_space, observation_space)
+            low=0, high=1, shape=(history_lookback + 1, len(data.columns) + correct))
+        super(LookbackWindowDataSpace, self).__init__(
+            action_space, observation_space)
         self.reset()
 
     def reset(self):

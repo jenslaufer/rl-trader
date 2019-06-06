@@ -1,10 +1,10 @@
 from gym import Env as BaseEnv
+import numpy as np
 
 
 class Env(BaseEnv):
 
     def __init__(self, space, context, reward, context_reset=True):
-        super(Env, self).__init__()
         self.action_space = space.action_space
         self.observation_space = space.observation_space
         self.space = space
@@ -12,6 +12,7 @@ class Env(BaseEnv):
         self.reward = reward
         self.context_reset = context_reset
         self.states = []
+        super(Env, self).__init__()
 
     def reset(self):
         print("\n\n===Env reset===")
@@ -27,7 +28,8 @@ class Env(BaseEnv):
     def step(self, action):
         obs, scaled_obs, done_obs = self.space.next_observation()
 
-        done_act, old_state, current_state, obs = self.context.act(action, obs)
+        done_act, old_state, current_state = self.context.act(
+            action, obs, scaled_obs)
 
         done = (done_obs | done_act)
 

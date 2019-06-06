@@ -37,15 +37,17 @@ def do_train():
     nums_testset = 259200
     train_df, test_df = split_train_test(nums_testset)
 
+    trading_context = TradingContext(
+        initial_fundings=initial_fundings,
+        trading_loss_pct=trading_loss_pct,
+        price_col_index=price_col_index)
+
     env = TradingEnv(space=LookbackWindowDataSpace(action_space=action_space,
                                                    history_lookback=history_lookback,
                                                    data=train_df,
                                                    random_start=True,
                                                    max_steps=max_steps),
-                     context=TradingContext(
-                         initial_fundings=initial_fundings,
-                         trading_loss_pct=trading_loss_pct,
-                         price_col_index=price_col_index),
+                     context=trading_context,
                      reward=reward_fct)
 
     train_env = DummyVecEnv([lambda:env])
