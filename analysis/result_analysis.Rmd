@@ -65,7 +65,6 @@ vis.df(train.df)
 
 
 
-
 ```{r}
 test.df <- load(glue('{LOGS_DIR}/test{INDEX}.csv'))
 ```
@@ -74,6 +73,9 @@ test.df <- load(glue('{LOGS_DIR}/test{INDEX}.csv'))
 ```{r fig.height=15, fig.width=20}
 test.df %>% vis.df()
 ```
+
+
+
 
 
 ```{r}
@@ -97,4 +99,7 @@ test.df %>% tail(10)
 ```
 
 
+```{r}
+test.df %>% dim()
+```
 

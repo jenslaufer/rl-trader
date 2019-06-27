@@ -9,6 +9,15 @@ services:
       - MODULE_CMD=rltrader.trainer
     secrets:
       - my_secret
+  
+  rltrainingdb:
+    image: mongo:3.6.13
+    container_name: "rltrainingdb"
+    ports:
+      - 27017:27017
+    command: mongod
+    volumes:
+      - './db:/data/db'
       
 secrets:
   my_secret:

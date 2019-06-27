@@ -26,8 +26,8 @@ def split_train_test(num):
 
 def do_train():
     action_space = spaces.Discrete(3)
-    history_lookback = 70
-    max_steps = 10080
+    history_lookback = 100
+    max_steps = 201600
     initial_fundings = 100000
     trading_loss_pct = 0.005
     price_col_index = 3
