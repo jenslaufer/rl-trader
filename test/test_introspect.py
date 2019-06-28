@@ -1,5 +1,6 @@
 import context
-from rltrader.util.introspect import split_module_class, get_objects, introspect_constructor
+from rltrader.util.introspect import split_module_class, \
+    get_objects, introspect_constructor, list_module_content
 
 
 def test_split_module_class():
@@ -8,6 +9,12 @@ def test_split_module_class():
 
     assert module == "stable_baselines.common.policies"
     assert name == "MlpPolicy"
+
+
+def test_list_module_content():
+    content = list_module_content("dummy")
+
+    assert content == ['Blubb', 'Dummy']
 
 
 def test_get_objects():
