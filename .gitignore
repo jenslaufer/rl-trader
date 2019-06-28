@@ -11,3 +11,4 @@ analysis/result_analysis.html
 analysis/.RData
 analysis/.Rhistory
 db/
+src/rltrader/util/__pycache__/

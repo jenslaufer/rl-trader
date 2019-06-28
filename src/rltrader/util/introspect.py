@@ -1,4 +1,11 @@
 import importlib
+import inspect
+
+
+def introspect_constructor(module_name):
+    module, funct = split_module_class(module_name)
+    spec = inspect.getargspec(getattr(__import__(module), funct).__init__)
+    return spec.args[1:], dict(zip(spec.args[-len(spec.defaults):], spec.defaults))
 
 
 def split_module_class(module_name):
@@ -23,6 +30,4 @@ def get_objects(d):
             else:
                 args[k] = v
 
-    obj = getattr(__import__(module), funct)(**args)
-
-    return obj
+    return getattr(__import__(module), funct)(**args)

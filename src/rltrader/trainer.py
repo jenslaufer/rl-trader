@@ -13,8 +13,7 @@ def do_train():
     sessions = list(db['sessions'].find({}))
 
     for session in sessions:
-        policy = introspect.get_object(session['policy']['name'],
-                                       session['policy']['args'])
+        pass
 
 
 if __name__ == '__main__':
