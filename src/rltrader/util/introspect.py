@@ -1,15 +1,16 @@
-import importlib
+from importlib import import_module
 import inspect
 
 
 def introspect_constructor(module_name):
     module, funct = split_module_class(module_name)
-    spec = inspect.getargspec(getattr(__import__(module), funct).__init__)
+    spec = inspect.getargspec(getattr(import_module(module), funct).__init__)
     return spec.args[1:], dict(zip(spec.args[-len(spec.defaults):], spec.defaults))
 
 
 def list_module_content(module_name):
-    return [i for i in dir(__import__(module_name)) if "_" not in i]
+    print(dir(import_module(module_name)))
+    return [i for i in dir(import_module(module_name)) if "_" not in i]
 
 
 def split_module_class(module_name):
@@ -34,4 +35,4 @@ def get_objects(d):
             else:
                 args[k] = v
 
-    return getattr(__import__(module), funct)(**args)
+    return getattr(import_module(module), funct)(**args)
