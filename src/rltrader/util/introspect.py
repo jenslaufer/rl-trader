@@ -9,7 +9,6 @@ def introspect_constructor(module_name):
 
 
 def list_module_content(module_name):
-    print(dir(import_module(module_name)))
     return [i for i in dir(import_module(module_name)) if "_" not in i]
 
 

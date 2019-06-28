@@ -9,6 +9,7 @@ def do_introspect():
     for module in modules:
         summary = []
         clazzes = list_module_content(module)
+        print(clazzes)
         for clazz in clazzes:
             module_name = "{}.{}".format(module, clazz)
             details = {}

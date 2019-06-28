@@ -12,3 +12,4 @@ analysis/.RData
 analysis/.Rhistory
 db/
 src/rltrader/util/__pycache__/
+src/*.json
