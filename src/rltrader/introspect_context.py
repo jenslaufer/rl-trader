@@ -1,15 +1,16 @@
 
 from rltrader.util.introspect import list_module_content, introspect_constructor
 import json
+from inspect import isfunction
 
 
 def do_introspect():
     modules = {'stable_baselines.common.policies',
-               'rltrader', 'stable_baselines'}
+               'rltrader.context', 'rltrader.rewards', 'rltrader.spaces', 'rltrader.env', 'stable_baselines'}
     for module in modules:
         summary = []
         clazzes = list_module_content(module)
-        print(clazzes)
+        # print(clazzes)
         for clazz in clazzes:
             module_name = "{}.{}".format(module, clazz)
             details = {}
@@ -19,12 +20,15 @@ def do_introspect():
                 for arg in args:
                     try:
                         default = defaults[arg]
-                    except:
+                        if isfunction(default):
+                            default = default.__name__
+                    except Exception as e:
+                        print("e1: {}".format(e))
                         default = None
                     details[arg] = default
 
-            except:
-                pass
+            except Exception as e:
+                print("e2: {}".format(e))
             summary.append(details)
 
         with open('{}.json'.format(module), 'w') as f:
