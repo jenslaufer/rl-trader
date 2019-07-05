@@ -29,10 +29,9 @@ def do_train():
     sessions = list(db['sessions'].find({}))
 
     for session in sessions:
-        print(session['agent'])
-        agent = get_objects(session['agent']['env'])
+        agent = get_objects(session['agent'])
         print(agent)
-        # agent.learn(total_timesteps=session['total_timesteps'])
+        agent.learn(session['total_timesteps'])
 
 
 if __name__ == '__main__':
