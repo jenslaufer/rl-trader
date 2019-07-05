@@ -1,6 +1,7 @@
 from gym import spaces
 import random
 from sklearn import preprocessing
+import pandas as pd
 
 
 class Space:
@@ -23,15 +24,16 @@ class LookbackWindowDataSpace(Space):
             random.seed(seed)
 
         self.__random_start = random_start
-        self.data = data
+        self.data = pd.read_csv(data)
         self.history_lookback = history_lookback
         self.max_steps = max_steps
 
         observation_space = spaces.Box(
-            low=0, high=1, shape=(history_lookback + 1, len(data.columns)))
+            low=0, high=1, shape=(history_lookback + 1, len(self.data.columns)))
         super(LookbackWindowDataSpace, self).__init__(
             action_space, observation_space)
         self.reset()
+        print("2")
 
     def reset(self):
         if self.__random_start:

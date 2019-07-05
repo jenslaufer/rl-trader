@@ -1,6 +1,6 @@
 import context
-from rltrader.util.introspect import split_module_class, \
-    get_objects, introspect_constructor, list_module_content
+from di.introspect import split_module_class, \
+    introspect_constructor, list_module_content
 
 
 def test_split_module_class():
@@ -14,24 +14,7 @@ def test_split_module_class():
 def test_list_module_content():
     content = list_module_content("dummy")
 
-    assert content == ['Blubb', 'Dummy']
-
-
-def test_get_objects():
-    config = {"name": "dummy.Dummy",
-              'bla': 1.03,
-              'something': 2.9,
-              'blubb': {"name": "dummy.Blubb",
-                        "salt": 2.4,
-                        "pepper": "black"
-                        }
-              }
-
-    obj = get_objects(config)
-
-    assert obj.bla == 1.03
-    assert obj.blubb.salt == 2.4
-    assert obj.blubb.pepper == 'black'
+    assert content == ['BaseEnv', 'Blubb', 'Dummy', 'DummyEnv', 'spaces']
 
 
 def test_introspect():

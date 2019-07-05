@@ -1,5 +1,5 @@
 
-from rltrader.util.introspect import list_module_content, introspect_constructor
+from di.introspect import list_module_content, introspect_constructor
 import json
 from inspect import isfunction
 
@@ -16,7 +16,7 @@ def do_introspect():
             details = {}
             try:
                 args, defaults = introspect_constructor(module_name)
-                details = {"module": module_name}
+                details = {"name": module_name}
                 for arg in args:
                     try:
                         default = defaults[arg]

@@ -6,7 +6,7 @@ services:
     container_name: rltrader
     volumes: 
       - ./data:/data
-      - ./src:/src
+      - ./:/src
     entrypoint: /bin/sh
     stdin_open: true
     tty: true
