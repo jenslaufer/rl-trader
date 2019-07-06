@@ -7,6 +7,7 @@ def get_objects(d):
     args = {}
     module = ""
     funct = ""
+    print(d)
     for k, v in d.items():
         if isinstance(v, dict):
             obj = get_objects(v)
@@ -18,8 +19,12 @@ def get_objects(d):
                 args[k] = v
 
     try:
+        print("1")
         print("{} {}".format(module, funct))
+        print("2")
         result = getattr(import_module(module), funct)(**args)
+
+        print("3")
         if isinstance(result, Factory):
             result = result.get()
 
@@ -55,3 +60,12 @@ class VecEnvFactory(Factory):
             envs.append(lambda: get_objects(arg))
 
         return module(envs)
+
+
+class ModuleFactory(Factory):
+    def __init__(self, target, args):
+        super(ModuleFactory, self).__init__(
+            target, args)
+
+    def get(self):
+        return getattr(import_module(self.module), self.funct)

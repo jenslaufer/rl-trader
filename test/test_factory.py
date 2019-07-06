@@ -1,6 +1,7 @@
 import context
 from di.factory import Factory, VecEnvFactory, get_objects
 import os
+from dummy import Dummy
 
 
 def test_get():
@@ -45,6 +46,19 @@ def test_get_objects_with_factory():
     print(obj)
 
     assert obj.envs[0].blubb == 22.929
+
+
+def test_get_module_with_factory():
+    config = {
+        "name": "di.factory.ModuleFactory",
+        "target": "dummy.Dummy",
+        "args": [{}]
+    }
+
+    obj = get_objects(config)
+    print(obj)
+
+    assert obj == Dummy
 
 
 def test_get_objects():
