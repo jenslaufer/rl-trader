@@ -14,3 +14,7 @@ db/
 src/rltrader/util/__pycache__/
 src/*.json
 src/di/__pycache__/
+build/
+dist/
+src/rltrader.egg-info/dependency_links.txt
+src/rltrader.egg-info/

@@ -1,7 +1,0 @@
-stable-baselines==2.6.0
-pandas==0.24.2
-scikit-learn==0.21.1
-config==0.4.2
-keras==2.2.4
-keras-rl==0.4.2
-pymongo==3.8.0
