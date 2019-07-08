@@ -64,3 +64,4 @@ class ModuleFactory(Factory):
 
     def get(self):
         return getattr(import_module(self.module), self.funct)
+

@@ -1,16 +1,17 @@
 import context
 from rltrader import spaces as rlspaces
+from rltrader import data as rldata
 from gym import spaces
 import pandas as pd
 import numpy as np
 
 
-df = pd.DataFrame([{'feature1': 7, 'feature2': 52},
-                   {'feature1': 4, 'feature2': 90},
-                   {'feature1': 10, 'feature2': 100},
-                   {'feature1': 6, 'feature2': 75},
-                   {'feature1': 2, 'feature2': 0},
-                   {'feature1': 1, 'feature2': 9}])
+data = rldata.DataFrameData(pd.DataFrame([{'feature1': 7, 'feature2': 52},
+                                          {'feature1': 4, 'feature2': 90},
+                                          {'feature1': 10, 'feature2': 100},
+                                          {'feature1': 6, 'feature2': 75},
+                                          {'feature1': 2, 'feature2': 0},
+                                          {'feature1': 1, 'feature2': 9}]))
 
 
 def test_spaces():
@@ -24,7 +25,7 @@ def test_spaces():
 
 def get_space(action_space, lookback, random_start, seed):
     return rlspaces.LookbackWindowDataSpace(action_space=action_space, history_lookback=lookback,
-                                            data=df, random_start=random_start, seed=seed)
+                                            data=data, random_start=random_start, seed=seed)
 
 
 def test_data_space_reset_unrandom():
@@ -41,7 +42,7 @@ def test_data_space_reset_unrandom():
     assert np.allclose(unscaled_obs, expected_unscaled_0)
     assert not done
     assert space.current_index == lookback + 2
-    assert space.end == len(df)
+    assert space.end == len(data.frame)
 
 
 def test_data_space_reset_random():

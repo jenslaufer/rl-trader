@@ -24,7 +24,7 @@ class LookbackWindowDataSpace(Space):
             random.seed(seed)
 
         self.__random_start = random_start
-        self.data = data
+        self.data = data.frame
         self.history_lookback = history_lookback
         self.max_steps = max_steps
 

@@ -60,6 +60,18 @@ def test_get_module_with_factory():
 
     assert obj == Dummy
 
+def test_get_dataframe_factory():
+    config = {
+        "name": "di.factory.ModuleFactory",
+        "target": "dummy.Dummy",
+        "args": [{}]
+    }
+
+    obj = get_objects(config)
+    print(obj)
+
+    assert obj == Dummy
+
 
 def test_get_objects():
     config = {"name": "dummy.Dummy",
