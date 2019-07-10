@@ -73,5 +73,4 @@ def do_train():
 
 
 if __name__ == '__main__':
-    split_train_test(30000)
     do_train()
