@@ -5,10 +5,12 @@ services:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-gpu
     container_name: rltrader
     environment:
-      - MODULE_REPO=git+ssh://git@bitbucket.org/jenslaufer/rl-trader.git
+      - MODULE_REPO=git+https://github.com/jenslaufer/rl-trader.git
       - MODULE_CMD=rltrader.trainer
-    secrets:
-      - my_secret
+    volumes: 
+      - $DATA_DIR:/rldata
+    depends_on: 
+      - rltrainingdb
   
   rltrainingdb:
     image: mongo:3.6.13
@@ -16,9 +18,3 @@ services:
     ports:
       - 27017:27017
     command: mongod
-    volumes:
-      - './db:/data/db'
-      
-secrets:
-  my_secret:
-    file: ./.ssh/rl

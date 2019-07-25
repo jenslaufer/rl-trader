@@ -3,24 +3,18 @@ version: '3.3'
 services:
   training:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
-    container_name: rltrader
+    container_name: rltrader-dev
     volumes: 
-      - ./data:/data
-      - ./:/src
-    entrypoint: /bin/sh
+      - $DATA_DIR:/rldata
+      - ./:/code
+    entrypoint: /bin/bash
     stdin_open: true
     tty: true
-    secrets:
-      - my_secret
+    depends_on: 
+      - rltrainingdb
   rltrainingdb:
     image: mongo:3.6.13
-    container_name: "rltrainingdb"
-    volumes:
-      - './db:/data/db'
+    container_name: "rltrainingdb-dev"
     ports:
       - 27017:27017
     command: mongod
-      
-secrets:
-  my_secret:
-    file: ./.ssh/rl
