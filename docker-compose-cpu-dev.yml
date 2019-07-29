@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  training:
+  trainingdev:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
     container_name: rltrader-dev
     volumes: 
@@ -11,10 +11,10 @@ services:
     stdin_open: true
     tty: true
     depends_on: 
-      - rltrainingdb
-  rltrainingdb:
+      - rltrainingdbdev
+  rltrainingdbdev:
     image: mongo:3.6.13
     container_name: "rltrainingdb-dev"
     ports:
-      - 27017:27017
+      - 27018:27017
     command: mongod
