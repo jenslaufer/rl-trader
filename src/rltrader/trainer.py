@@ -6,21 +6,6 @@ import pandas as pd
 import io
 
 
-def split_train_test(num):
-    df = pd.read_csv('./data/btc.csv')
-    df = df.sort_values('Timestamp')
-    df = df.dropna().reset_index()[
-        ['Open', 'High', 'Low', 'Close', 'Volume_(BTC)']]
-    slice_point = int(len(df) - num)
-
-    train_data = './data/train.csv'
-    test_data = './data/test.csv'
-    df[:slice_point].to_csv(train_data[:10000], index=False)
-    df[slice_point:].to_csv(test_data[:1000], index=False)
-
-    return train_data, test_data
-
-
 def __do_train_session(session):
     model = get_objects(session['training'])
     model.learn(session['total_timesteps'])
