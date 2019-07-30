@@ -37,6 +37,9 @@ def test_data_space_reset_unrandom():
     lookback = 2
     space = get_space(action_space, lookback, False, None)
 
+    assert space.observation_space == spaces.Box(
+        low=0, high=1, shape=(lookback + 1, len(data.frame.columns) - 1))
+
     expected_unscaled_0 = np.array([[7, 52], [4, 90], [10, 100]])
 
     assert space.current_index == lookback + 1

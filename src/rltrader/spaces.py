@@ -29,8 +29,12 @@ class LookbackWindowDataSpace(Space):
         self.max_steps = max_steps
         self.date_col = date_col
 
+        ncols = len(self.data.columns)
+        if date_col != None:
+            ncols -=1
+
         observation_space = spaces.Box(
-            low=0, high=1, shape=(history_lookback + 1, len(self.data.columns)))
+            low=0, high=1, shape=(history_lookback + 1, ncols))
         super(LookbackWindowDataSpace, self).__init__(
             action_space, observation_space)
         self.reset()
