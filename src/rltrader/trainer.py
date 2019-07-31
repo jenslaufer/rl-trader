@@ -15,13 +15,15 @@ def __do_train_session(session):
 
     obs = test_env.reset()
     done = False
+    reward_sum = 0
     while not done:
         action, _states = model.predict(obs)
-        obs, rewards, done, info = test_env.step(action)
+        obs, reward, done, info = test_env.step(action)
+        reward_sum += reward
 
     test_history = test_env.states
 
-    return model, training_history, test_history
+    return model, reward_sum, training_history, test_history
 
 
 def __to_csv(data, id, filename, fs):
@@ -47,11 +49,18 @@ def do_train():
     db = client['training']
     fs = gridfs.GridFS(db)
 
-    sessions = list(db['sessions'].find({}))
+    sessions = list(db['sessions'].find({"test_metrics": {'$exists': True}}))
 
     for session in sessions:
         id = session['_id']
-        model, training_history, test_history = __do_train_session(session)
+        model, reward_sum, training_history, test_history = __do_train_session(
+            session)
+        db['sessions'].update_one({'_id': id}, {
+            '$set': {
+                'test_metrics': {'reward_sum': reward_sum}
+            }
+        }
+        )
         __save_model(model, id, fs)
         __to_csv(training_history, id, "training_history.csv", fs)
         __to_csv(test_history, id, "test_history.csv", fs)
