@@ -49,7 +49,7 @@ def do_train():
     db = client['training']
     fs = gridfs.GridFS(db)
 
-    sessions = list(db['sessions'].find({"test_metrics": {'$exists': True}}))
+    sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
 
     for session in sessions:
         id = session['_id']

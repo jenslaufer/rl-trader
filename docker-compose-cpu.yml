@@ -5,7 +5,7 @@ services:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
     container_name: rltrader
     environment:
-      - MODULE_REPO=git+https://github.com/jenslaufer/rl-trader.git@develop
+      - MODULE_REPO=git+https://github.com/jenslaufer/rl-trader.git@feature/training_metric
       - MODULE_CMD=rltrader.trainer
     volumes: 
       - $DATA_DIR:/rldata
