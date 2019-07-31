@@ -1,9 +1,9 @@
 # A module for RL trading #
 
-## Example Training JSON
+## Example Training JSON ##
 
 ```json
-{ 
+{
     "training" : {
         "ent_coef" : 0.01, 
         "alpha" : 0.99, 
@@ -95,27 +95,27 @@
 }
 ```
 
-## Steps to  training
+## Steps to training ##
 
-__1. Create a .env file__
+### 1. Create a .env file ###
 
    ```code
    DATA_DIR=<location of data on machine>
    ```
-   
-__2. Start training container to initialize containers and start database__
+
+### 2. Start training container to initialize containers and start database ###
 
 ```shell
 docker-compose -f "docker-compose-cpu.yml" up -d --build
 ```
 
-__3. Login into Mongo DB__
+### 3. Login into Mongo DB ###
 
 ```shell
-docker exec -it rltrainingdb bash 
+docker exec -it rltrainingdb bash
 ```
 
-__4. Add traing session to mongodb__
+### 4. Add traing session to mongodb ###
 
 Within the mongo shell execute the following commands:
 
@@ -134,8 +134,7 @@ switched to db training
 : "gym.spaces.Discrete", "n" : 3 }, "name" : "rltrader.spaces.LookbackWindowDataSpace", "date_col" : "date" }, "reward" : { "name" : "rltrader.rewards.net_value_reward" }, "name" : "rltrader.env.Env", "context_reset" : false } })
 ```
 
-
-__2. Restart training containers__
+### 5. Restart training containers ###
 
 ```shell
 docker-compose -f "docker-compose-cpu.yml" up -d --build
