@@ -4,7 +4,6 @@
 
 ```json
 { 
-    "_id" : ObjectId("5d3ed4ad1c793d1ddd9cb0e4"), 
     "training" : {
         "ent_coef" : 0.01, 
         "alpha" : 0.99, 
