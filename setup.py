@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages, find_namespace_packages
 
 setup(name='rltrader',
-      version='0.1.9',
+      version='0.1.10',
       author='Jens Laufer',
       author_email='jenslaufer@gmail.com',
       install_requires=['stable-baselines==2.6.0',
