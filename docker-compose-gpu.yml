@@ -17,4 +17,6 @@ services:
     container_name: "rltrainingdb"
     ports:
       - 27017:27017
+    volumes:
+      - $DB_DIR:/data/db
     command: mongod
