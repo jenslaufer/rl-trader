@@ -3,17 +3,19 @@ import gym
 from gym import spaces
 import pandas as pd
 import numpy as np
+import logging
 
 INITIAL_ACCOUNT_BALANCE = 1000000
-MAX_ACCOUNT_BALANCE     = 100000000
-MAX_NUM_SHARES          = 1000000000
-MAX_SHARE_PRICE         = 5000
-MAX_OPEN_POSITIONS      = 5
-MAX_STEPS               = 20000
+MAX_ACCOUNT_BALANCE = 100000000
+MAX_NUM_SHARES = 1000000000
+MAX_SHARE_PRICE = 5000
+MAX_OPEN_POSITIONS = 5
+MAX_STEPS = 20000
 
 HOLD = 0
 BUY = 1
 SELL = 2
+
 
 class TradingEnv(gym.Env):
     metadata = {'render.modes': ['human']}
@@ -93,7 +95,7 @@ class TradingEnv(gym.Env):
         delay_modifier = (self.current_step / MAX_STEPS)
 
         reward = self.balance * delay_modifier
-        done = self.net_worth <= 0 # TODO or if last entry of the day has been reached
+        done = self.net_worth <= 0  # TODO or if last entry of the day has been reached
 
         obs = self._next_observation()
 
@@ -108,7 +110,6 @@ class TradingEnv(gym.Env):
             self.df.loc[self.current_step, "open"], self.df.loc[self.current_step, "close"])
         # TODO calculate current_price by best_bid if action_type == SELL
         # TODO calculate current_price by best_ask if action_type == BUY
-
 
         if action_type == BUY:
             # Buy amount % of balance in shares
@@ -148,12 +149,12 @@ class TradingEnv(gym.Env):
         # Render the environment to the screen
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
 
-        print(f'Step: {self.current_step}')
-        print(f'Balance: {self.balance}')
-        print(
-            f'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
-        print(
-            f'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
-        print(
-            f'Net worth: {self.net_worth} (Max net worth: {self.max_net_worth})')
-        print(f'Profit: {profit}')
+        printf('Step: {self.current_step}')
+        printf('Balance: {self.balance}')
+        printf(
+            'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
+        printf(
+            'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
+        printf(
+            'Net worth: {self.net_worth} (Max net worth: {self.max_net_worth})')
+        printf('Profit: {profit}')

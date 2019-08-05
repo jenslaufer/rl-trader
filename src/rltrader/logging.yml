@@ -1,0 +1,27 @@
+version: 1
+formatters:
+  simple:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  detail:
+    format: '%(asctime)s - %(levelname)s - File: %(filename)s - %(funcName)s() - Line: %(lineno)d -  %(message)s'
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: detail
+    stream: ext://sys.stdout
+  file:
+    class : logging.handlers.TimedRotatingFileHandler
+    formatter: simple
+    utc: false
+    when: midnight
+    backupCount: 7
+    filename: ../application.log
+loggers:
+  rltrader:
+    level: INFO
+    handlers: [console]
+    propagate: no
+root:
+  level: INFO
+  handlers: [console]
