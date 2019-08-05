@@ -89,6 +89,7 @@ class TradingEnv(gym.Env):
         if self.current_step > len(self.df.loc[:, 'open'].values) - 6:
             self.current_step = 0
 
+        # TODO consider using this modifier
         delay_modifier = (self.current_step / MAX_STEPS)
 
         reward = self.balance * delay_modifier

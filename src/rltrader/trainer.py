@@ -1,13 +1,19 @@
-from .env import Env as TradingEnv
+#from .env import Env as TradingEnv
 from pymongo import MongoClient
 import gridfs
 from di.factory import get_objects
 import pandas as pd
 import io
-
+from stable_baselines.common.policies import MlpPolicy
+from stable_baselines.common.vec_env import DummyVecEnv
+from stable_baselines import A2C
+from .trading_env import TradingEnv
 
 def __do_train_session(session):
-    model = get_objects(session['training'])
+    # model = get_objects(session['training'])
+    df = pd.read_csv('/rldata/preprocessed/train_ZL000023_reduced.csv')
+    env = DummyVecEnv([lambda: TradingEnv(df)])
+    model = A2C(MlpPolicy, env, verbose=1)
     model.learn(session['total_timesteps'])
     training_history = model.env.envs[0].states
 
