@@ -19,3 +19,4 @@ dist/
 src/rltrader.egg-info/dependency_links.txt
 src/rltrader.egg-info/
 .env
+application.log

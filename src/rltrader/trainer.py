@@ -18,9 +18,11 @@ def __do_train_session(session):
     df = pd.read_csv('/rldata/preprocessed/train_ZL000023_reduced.csv')
     env = DummyVecEnv([lambda: TradingEnv(df)])
     model = A2C(MlpPolicy, env, verbose=1)
+
     logging.info('Starting learning phase...')
     model.learn(session['total_timesteps'])
     logging.info('Learning has been finished.')
+    
     training_history = model.env.envs[0].states
 
     logging.info('Starting testing phase...')
@@ -62,12 +64,12 @@ def do_train():
     db = client['training']
     fs = gridfs.GridFS(db)
 
-    logging.info('loading training session from db...')
+    logging.info('Loading training session from db...')
     sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
 
     for session in sessions:
         id = session['_id']
-        logging.info('Starting training on session %(id)...', id)
+        logging.info('Starting training on session %s...', id)
         model, reward_sum, training_history, test_history = __do_train_session(
             session)
         logging.info('Storing training results...')
@@ -84,10 +86,5 @@ def do_train():
 
 if __name__ == '__main__':
     logging.config.dictConfig(yaml.load(open('rltrader/logging.yml', 'r')))
-    #logger = logging.getLogger(__name__)
-
-    #logger.info('This is a debug message')
-    #logging.basicConfig(filename='../application.log', level=logging.INFO)
-
-    logging.info('This is a test message')
+    logging.info('Logging module setup finished.')
     do_train()

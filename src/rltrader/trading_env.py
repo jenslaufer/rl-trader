@@ -149,12 +149,13 @@ class TradingEnv(gym.Env):
         # Render the environment to the screen
         profit = self.net_worth - INITIAL_ACCOUNT_BALANCE
 
-        printf('Step: {self.current_step}')
-        printf('Balance: {self.balance}')
-        printf(
+        print('###### TEST')
+        logging.info('Step: {self.current_step}')
+        logging.info('Balance: {self.balance}')
+        logging.info(
             'Shares held: {self.shares_held} (Total sold: {self.total_shares_sold})')
-        printf(
+        logging.info(
             'Avg cost for held shares: {self.cost_basis} (Total sales value: {self.total_sales_value})')
-        printf(
+        logging.info(
             'Net worth: {self.net_worth} (Max net worth: {self.max_net_worth})')
-        printf('Profit: {profit}')
+        logging.info('Profit: {profit}')
