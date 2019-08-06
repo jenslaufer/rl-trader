@@ -44,6 +44,7 @@ class TradingContext(Context):
         old_state = self._get_state()
         done = self.net_worth <= 0
 
+        # TODO consider passing attributes instead of global class attributes like current_price
         # TODO remove dependency on price_col_index -> pass current_price as method_param?
         self.current_price = obs[len(obs) - 1][self.price_col_index]
         # TODO calculate current_price by best_bid if action_type == SELL
@@ -51,19 +52,19 @@ class TradingContext(Context):
 
         self.fees = 0
 
-        if action == BUY:
+        if action_type == BUY:
             self._buy(amount)
-        elif action == SELL:
+        elif action_type == SELL:
             self._sell(amount)
 
         # realized + unrealized PnL
-        self.net_worth = self.balance + self.shares_held * current_price
+        self.net_worth = self.balance + self.asset_balance * self.current_price
         if self.net_worth > self.max_net_worth:
             self.max_net_worth = self.net_worth
-        
-        if self.shares_held == 0:
+
+        if self.asset_balance == 0:
             self.cost_basis = 0
-        
+
         current_state = self._get_state()
 
         return done, old_state, current_state
@@ -73,7 +74,7 @@ class TradingContext(Context):
         total_possible_assets = int(self.balance / self.current_price)
         assets_bought = int(total_possible_assets * amount)
         prev_cost = self.cost_basis * self.asset_balance
-        additional_cost = assets_bought * current_price
+        additional_cost = assets_bought * self.current_price
 
         # only buy with sufficient balance
         if self.balance < additional_cost:
@@ -94,10 +95,10 @@ class TradingContext(Context):
 
         # only sell with sufficient assets
         if self.asset_balance < assets_sold:
-            self.balance += assets_sold * current_price
+            self.balance += assets_sold * self.current_price
             self.asset_balance -= assets_sold
             self.total_assets_sold += assets_sold
-            self.total_sales_value += assets_sold * current_price
+            self.total_sales_value += assets_sold * self.current_price
 
         # TODO include fees
         # if self.asset_balance > 0:

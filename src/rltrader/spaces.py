@@ -65,7 +65,7 @@ class LookbackWindowDataSpace(Space):
         if not self.__random_start or (self.end >= len(self.data)):
             self.end = len(self.data)
 
-        logging.info("Space resetted to start: %s end: %s",
+        logging.info("Space resetted to {start: %s, end: %s}.",
                      self.current_index, self.end)
 
     def next_observation(self):

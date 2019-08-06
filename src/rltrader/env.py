@@ -1,7 +1,8 @@
 from gym import Env as BaseEnv
 import numpy as np
 import logging
-
+import math
+from math import log
 
 class Env(BaseEnv):
 
@@ -53,10 +54,15 @@ class Env(BaseEnv):
 
         self.states.append(current_state)
 
-        reward = self.reward(old_state, current_state, action, obs, done)
+        # TODO fix dynamic reward function call
+        #reward = self.reward(old_state, current_state, action, obs, done)
+        old_net_worth = old_state['net_worth']
+        current_net_worth = current_state['net_worth']
+        reward = log(current_net_worth) - log(old_net_worth) 
 
         current_state['reward'] = reward
-        current_state['action'] = action
+        current_state['action_type'] = action[0]
+        current_state['action_type'] = action[1]
         current_state['done'] = done
 
         return (obs, reward, done, current_state)

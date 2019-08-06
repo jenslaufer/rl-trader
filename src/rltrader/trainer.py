@@ -14,18 +14,13 @@ import yaml
 
 
 def __do_train_session(session):
+    logging.info('Instanciating training session object...')
     model = get_objects(session['training'])
-    # df = pd.read_csv('/rldata/preprocessed/train_ZL000023_reduced.csv')
-    # env = DummyVecEnv([lambda: TradingEnv(df)])
-    # model = A2C(MlpPolicy, env, verbose=1)
 
-    print(session['total_timesteps'])
-    print(model)
     logging.info('Starting learning phase...')
-    model.learn(total_timesteps=2345)
-    # model.learn(session['total_timesteps'])
+    model.learn(session['total_timesteps'])
     logging.info('Learning has been finished.')
-    
+
     training_history = model.env.envs[0].states
 
     logging.info('Starting testing phase...')
@@ -87,8 +82,11 @@ def do_train():
         __to_csv(training_history, id, "training_history.csv", fs)
         __to_csv(test_history, id, "test_history.csv", fs)
 
+    logging.info('%s sessions have been trained.', len(sessions))
+
 
 if __name__ == '__main__':
-    logging.config.dictConfig(yaml.load(open('rltrader/logging.yml', 'r')))
+    logging.config.dictConfig(
+        yaml.load(open('rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
     do_train()
