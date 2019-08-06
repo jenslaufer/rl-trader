@@ -1,0 +1,83 @@
+{ 
+    "_id" : ObjectId("5d42b130ccf7400360a91c78"), 
+    "training" : {
+        "ent_coef" : 0.01, 
+        "alpha" : 0.99, 
+        "verbose" : NumberInt(1), 
+        "n_steps" : NumberInt(5), 
+        "full_tensorboard_log" : false, 
+        "learning_rate" : 0.0007, 
+        "_init_setup_model" : true, 
+        "gamma" : 0.99, 
+        "vf_coef" : 0.25, 
+        "env" : {
+            "name" : "di.factory.VecEnvFactory", 
+            "target" : "stable_baselines.common.vec_env.DummyVecEnv", 
+            "args" : [
+                {
+                    "context" : {
+                        "trading_loss_pct" : 0.001, 
+                        "initial_fundings" : 1000000.0, 
+                        "name" : "rltrader.context.TradingContext", 
+                        "price_col_index" : NumberInt(2)
+                    }, 
+                    "space" : {
+                        "max_steps" : NumberInt(10000), 
+                        "random_start" : true, 
+                        "history_lookback" : NumberInt(10), 
+                        "data" : {
+                            "name" : "rltrader.data.CsvFileDataFrameData", 
+                            "path" : "/rldata/preprocessed/train_ZL000023_reduced.csv"
+                        },  
+                        "name" : "rltrader.spaces.LookbackWindowDataSpace", 
+                        "date_col" : "date"
+                    }, 
+                    "reward" : {
+                        "name" : "rltrader.rewards.portfolio_log"
+                    }, 
+                    "name" : "rltrader.env.Env", 
+                    "context_reset" : true
+                }
+            ]
+        }, 
+        "tensorboard_log" : null, 
+        "policy" : {
+            "target" : "stable_baselines.common.policies.MlpPolicy", 
+            "name" : "di.factory.ModuleFactory", 
+            "args" : [
+                {
+
+                }
+            ]
+        }, 
+        "max_grad_norm" : 0.5, 
+        "epsilon" : 0.00001, 
+        "name" : "stable_baselines.A2C", 
+        "lr_schedule" : "constant"
+    }, 
+    "total_timesteps" : NumberInt(2000), 
+    "test_env" : {
+        "context" : {
+            "trading_loss_pct" : 0.001, 
+            "initial_fundings" : 1000000.0, 
+            "name" : "rltrader.context.TradingContext", 
+            "price_col_index" : NumberInt(2)
+        }, 
+        "space" : {
+            "max_steps" : NumberInt(10000), 
+            "random_start" : false, 
+            "history_lookback" : NumberInt(10), 
+            "data" : {
+                "name" : "rltrader.data.CsvFileDataFrameData", 
+                "path" : "/rldata/preprocessed/test_ZL000023_reduced.csv"
+            }, 
+            "name" : "rltrader.spaces.LookbackWindowDataSpace", 
+            "date_col" : "date"
+        }, 
+        "reward" : {
+            "name" : "rltrader.rewards.portfolio_log"
+        }, 
+        "name" : "rltrader.env.Env", 
+        "context_reset" : false
+    }
+}

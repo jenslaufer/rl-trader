@@ -14,13 +14,16 @@ import yaml
 
 
 def __do_train_session(session):
-    # model = get_objects(session['training'])
-    df = pd.read_csv('/rldata/preprocessed/train_ZL000023_reduced.csv')
-    env = DummyVecEnv([lambda: TradingEnv(df)])
-    model = A2C(MlpPolicy, env, verbose=1)
+    model = get_objects(session['training'])
+    # df = pd.read_csv('/rldata/preprocessed/train_ZL000023_reduced.csv')
+    # env = DummyVecEnv([lambda: TradingEnv(df)])
+    # model = A2C(MlpPolicy, env, verbose=1)
 
+    print(session['total_timesteps'])
+    print(model)
     logging.info('Starting learning phase...')
-    model.learn(session['total_timesteps'])
+    model.learn(total_timesteps=2345)
+    # model.learn(session['total_timesteps'])
     logging.info('Learning has been finished.')
     
     training_history = model.env.envs[0].states
@@ -59,7 +62,8 @@ def __save_model(model, id, fs):
 
 
 def do_train():
-    client = MongoClient("mongodb://rltrainingdb")
+    # TODO extract db name to external docker config
+    client = MongoClient("mongodb://rltrainingdb-dev")
 
     db = client['training']
     fs = gridfs.GridFS(db)
