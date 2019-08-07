@@ -32,6 +32,9 @@ class TradingContext(Context):
         self.total_assets_sold = 0
         self.total_sales_value = 0
         self.fees = 0
+
+        # TODO implement MAX_OPEN_POSITIONS
+        
         logging.info('Account resetted.')
 
     def _get_state(self):

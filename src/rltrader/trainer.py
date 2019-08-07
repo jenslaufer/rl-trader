@@ -14,7 +14,7 @@ import yaml
 
 
 def __do_train_session(session):
-    logging.info('Instanciating training session object...')
+    logging.info('Instanciating training object...')
     model = get_objects(session['training'])
 
     logging.info('Starting learning phase...')
@@ -23,9 +23,10 @@ def __do_train_session(session):
 
     training_history = model.env.envs[0].states
 
-    logging.info('Starting testing phase...')
+    logging.info('Instanciating test_env object...')
     test_env = get_objects(session['test_env'])
 
+    logging.info('Starting testing phase...')
     obs = test_env.reset()
     done = False
     reward_sum = 0
@@ -33,6 +34,7 @@ def __do_train_session(session):
         action, _states = model.predict(obs)
         obs, reward, done, info = test_env.step(action)
         reward_sum += reward
+        test_env.render(info)
 
     test_history = test_env.states
 

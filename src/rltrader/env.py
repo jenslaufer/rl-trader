@@ -57,7 +57,7 @@ class Env(BaseEnv):
         # print(current_state)
         old_net_worth = old_state['net_worth']
         current_net_worth = current_state['net_worth']
-        reward = log(current_net_worth) - log(old_net_worth) 
+        reward = log(current_net_worth) - log(old_net_worth)
         # print(reward)
 
         obs, scaled_obs, last_timestep_reached = self.space.next_observation()
@@ -70,3 +70,17 @@ class Env(BaseEnv):
 
         return (obs, reward, done, current_state)
         # return (scaled_obs, reward, done, current_state)
+
+    def render(self, current_state):
+        # Render the environment to the screen
+        profit = current_state['net_worth'] - current_state['initial_fundings']
+
+        logging.debug('Step: %s', self.space.current_index)
+        logging.debug('Balance: %s', current_state['balance'])
+        logging.debug(
+            'Assets held: %s (Total sold: %s)', current_state['asset_balance'], current_state['total_assets_sold'])
+        logging.debug(
+            'Avg cost for held assets: %s (Total sales value: %s)', current_state['cost_basis'], current_state['total_sales_value'])
+        logging.debug(
+            'Net worth: %s (Max net worth: %s)', current_state['net_worth'], current_state['max_net_worth'])
+        logging.debug('Profit: %s', profit)

@@ -1,11 +1,11 @@
 version: 1
 formatters:
   detail:
-    format: '%(asctime)s - %(levelname)-5s - %(filename)-10s:%(funcName)5s():%(lineno)-3d - %(message)s'
+    format: '%(asctime)s - %(levelname)-5s - %(filename)-10s - %(funcName)18s():%(lineno)-3d - %(message)s'
 handlers:
   console:
     class: logging.StreamHandler
-    level: INFO
+    level: DEBUG
     formatter: detail
     stream: ext://sys.stdout
   file:
@@ -17,5 +17,5 @@ handlers:
     backupCount: 7
     filename: ../application.log
 root:
-  level: INFO
+  level: DEBUG
   handlers: [console, file]
