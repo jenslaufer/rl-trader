@@ -12,7 +12,7 @@ class Space:
         self.action_space = action_space
         self.observation_space = observation_space
 
-        # TODO split action_space from observation_space 
+        # TODO split action_space from observation_space
         # -> remove space class??
         # -> rename to state
 
@@ -42,7 +42,7 @@ class LookbackWindowDataSpace(Space):
         # static part of the observation space contains the OHCL values for the last (history_lookback + 1) prices
         observation_space = spaces.Box(
             low=0, high=1, shape=(history_lookback + 1, ncols))
-        
+
         # actions of the format Buy x%, Sell x%, Hold, etc.
         action_space = spaces.Box(
             low=np.array([0, 0]), high=np.array([3, 1]), dtype=np.float16)
@@ -50,7 +50,7 @@ class LookbackWindowDataSpace(Space):
         super(LookbackWindowDataSpace, self).__init__(
             action_space, observation_space)
 
-        self.reset()
+        # self.reset()
 
     def reset(self):
         # sets the current starting point within the data frame...
@@ -89,5 +89,11 @@ class LookbackWindowDataSpace(Space):
             done = True
 
         self.current_index += 1
+        self.current_obs = obs
+        self.current_scaled_obs = scaled_obs
 
         return (obs, scaled_obs, done)
+
+    # helper method - delete when we got rid of any dependency to obs in context
+    def get_current_obs(self):
+        return self.current_obs, self.current_scaled_obs

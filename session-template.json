@@ -55,7 +55,7 @@
         "name" : "stable_baselines.A2C", 
         "lr_schedule" : "constant"
     }, 
-    "total_timesteps" : NumberInt(2000), 
+    "total_timesteps" : NumberInt(50000), 
     "test_env" : {
         "context" : {
             "trading_loss_pct" : 0.001, 
@@ -78,6 +78,6 @@
             "name" : "rltrader.rewards.portfolio_log"
         }, 
         "name" : "rltrader.env.Env", 
-        "context_reset" : false
+        "context_reset" : true
     }
 }

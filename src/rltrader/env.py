@@ -40,13 +40,10 @@ class Env(BaseEnv):
         # return scaled_obs
 
     def step(self, action):
-        # TODO consider moving next_observation() call to end??
-        obs, scaled_obs, last_timestep_reached = self.space.next_observation()
-
+        # TODO there should be no dependency to obs / scaled_obs in .act(...)
+        obs, scaled_obs = self.space.get_current_obs()
         net_worth_depleted, old_state, current_state = self.context.act(
             action, obs, scaled_obs)
-
-        done = (last_timestep_reached | net_worth_depleted)
 
         # TODO consider removing this, in case we moved to next obs at the end
         if len(self.states) == 0:
@@ -56,9 +53,15 @@ class Env(BaseEnv):
 
         # TODO fix dynamic reward function call
         #reward = self.reward(old_state, current_state, action, obs, done)
+        # print(old_state)
+        # print(current_state)
         old_net_worth = old_state['net_worth']
         current_net_worth = current_state['net_worth']
         reward = log(current_net_worth) - log(old_net_worth) 
+        # print(reward)
+
+        obs, scaled_obs, last_timestep_reached = self.space.next_observation()
+        done = (last_timestep_reached | net_worth_depleted)
 
         current_state['reward'] = reward
         current_state['action_type'] = action[0]

@@ -21,7 +21,7 @@ class TradingContext(Context):
         self.trading_loss_pct = trading_loss_pct
         self.initial_fundings = initial_fundings
         self.price_col_index = price_col_index
-        self.reset()
+        # self.reset()
 
     def reset(self):
         # resets all accout data
@@ -37,6 +37,7 @@ class TradingContext(Context):
     def _get_state(self):
         return dict(vars(self))
 
+    # TODO get rid of obs and obs_scaled here, because it is nothing we want to take care with here
     def act(self, action, obs, obs_scaled):
         action_type = action[0]
         amount = action[1]
