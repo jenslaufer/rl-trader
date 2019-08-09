@@ -4,6 +4,7 @@ import logging
 import math
 from math import log
 
+
 class Env(BaseEnv):
 
     def __init__(self, space, context, reward, context_reset=True):
@@ -44,12 +45,16 @@ class Env(BaseEnv):
         obs, scaled_obs = self.space.get_current_obs()
         net_worth_depleted, old_state, current_state = self.context.act(
             action, obs, scaled_obs)
+        action_type = self.context.render_action_type(action[0])
+        action_amount = action[1]
+        logging.debug('Action taken: %s (%s)', action_type, action_amount)
 
         # TODO consider removing this, in case we moved to next obs at the end
         if len(self.states) == 0:
             self.states.append(old_state)
 
         self.states.append(current_state)
+        logging.debug('Account state: %s', current_state)
 
         # TODO fix dynamic reward function call
         #reward = self.reward(old_state, current_state, action, obs, done)
@@ -58,14 +63,14 @@ class Env(BaseEnv):
         old_net_worth = old_state['net_worth']
         current_net_worth = current_state['net_worth']
         reward = log(current_net_worth) - log(old_net_worth)
-        # print(reward)
+        logging.debug('Reward received: %s', reward)
 
         obs, scaled_obs, last_timestep_reached = self.space.next_observation()
         done = (last_timestep_reached | net_worth_depleted)
 
         current_state['reward'] = reward
         current_state['action_type'] = action[0]
-        current_state['action_type'] = action[1]
+        current_state['action_amount'] = action[1]
         current_state['done'] = done
 
         return (obs, reward, done, current_state)
@@ -75,12 +80,12 @@ class Env(BaseEnv):
         # Render the environment to the screen
         profit = current_state['net_worth'] - current_state['initial_fundings']
 
-        logging.debug('Step: %s', self.space.current_index)
+        logging.debug('##### Step: %s #####', self.space.current_index)
         logging.debug('Balance: %s', current_state['balance'])
         logging.debug(
             'Assets held: %s (Total sold: %s)', current_state['asset_balance'], current_state['total_assets_sold'])
-        logging.debug(
-            'Avg cost for held assets: %s (Total sales value: %s)', current_state['cost_basis'], current_state['total_sales_value'])
+        # logging.debug(
+        #     'Avg cost for held assets: %s (Total sales value: %s)', current_state['cost_basis'], current_state['total_sales_value'])
         logging.debug(
             'Net worth: %s (Max net worth: %s)', current_state['net_worth'], current_state['max_net_worth'])
         logging.debug('Profit: %s', profit)

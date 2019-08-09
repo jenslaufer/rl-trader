@@ -3,10 +3,9 @@ import logging
 
 from sklearn import preprocessing
 
-HOLD = 0
-BUY = 1
-SELL = 2
-
+BUY = 'BUY' # action_type in [0,1)
+SELL = 'SELL' # action_type in [1,2)
+HOLD = 'HOLD' # action_type in [2,3)
 
 class Context:
 
@@ -34,8 +33,8 @@ class TradingContext(Context):
         self.fees = 0
 
         # TODO implement MAX_OPEN_POSITIONS
-        
-        logging.info('Account resetted.')
+
+        logging.info('Account resetted to %s.', self._get_state())
 
     def _get_state(self):
         return dict(vars(self))
@@ -54,11 +53,15 @@ class TradingContext(Context):
         # TODO calculate current_price by best_bid if action_type == SELL
         # TODO calculate current_price by best_ask if action_type == BUY
 
+        # TODO delete this workaround after fixing preprocessing
+        if self.current_price == 0:
+            self.current_price = 0.0000000000000001
+
         self.fees = 0
 
-        if action_type == BUY:
+        if action_type < 1:
             self._buy(amount)
-        elif action_type == SELL:
+        elif action_type < 2:
             self._sell(amount)
 
         # realized + unrealized PnL
@@ -77,14 +80,14 @@ class TradingContext(Context):
         # Buy amount % of balance in assets
         total_possible_assets = int(self.balance / self.current_price)
         assets_bought = int(total_possible_assets * amount)
-        prev_cost = self.cost_basis * self.asset_balance
+        #prev_cost = self.cost_basis * self.asset_balance
         additional_cost = assets_bought * self.current_price
 
         # only buy with sufficient balance
-        if self.balance < additional_cost:
+        if self.balance >= additional_cost:
             self.balance -= additional_cost
-            self.cost_basis = (
-                prev_cost + additional_cost) / (self.asset_balance + assets_bought)
+            # self.cost_basis = (
+            #    prev_cost + additional_cost) / (self.asset_balance + assets_bought)
             self.asset_balance += assets_bought
 
         # TODO include fees
@@ -98,7 +101,7 @@ class TradingContext(Context):
         assets_sold = int(self.asset_balance * amount)
 
         # only sell with sufficient assets
-        if self.asset_balance < assets_sold:
+        if self.asset_balance >= assets_sold:
             self.balance += assets_sold * self.current_price
             self.asset_balance -= assets_sold
             self.total_assets_sold += assets_sold
@@ -110,3 +113,11 @@ class TradingContext(Context):
         #     self.fees = sold * self.trading_loss_pct
         #     self.asset_balance -= self.asset_balance
         #     self.balance = sold - self.fees
+
+    def render_action_type(self, action_type):
+        if action_type < 1:
+            return BUY
+        elif action_type < 2:
+            return SELL
+        else:
+            return HOLD

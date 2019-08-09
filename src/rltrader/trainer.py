@@ -1,4 +1,3 @@
-#from .env import Env as TradingEnv
 from pymongo import MongoClient
 import gridfs
 from di.factory import get_objects
@@ -7,7 +6,6 @@ import io
 from stable_baselines.common.policies import MlpPolicy
 from stable_baselines.common.vec_env import DummyVecEnv
 from stable_baselines import A2C
-from .trading_env import TradingEnv
 import logging
 import logging.config
 import yaml
