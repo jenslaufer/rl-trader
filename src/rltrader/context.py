@@ -55,7 +55,8 @@ class TradingContext(Context):
 
         # TODO delete this workaround after fixing preprocessing
         if self.current_price == 0:
-            self.current_price = 0.0000000000000001
+            self.current_price = 0.001
+            # self.current_price = 0.0000000000000001
 
         self.fees = 0
 
@@ -69,8 +70,8 @@ class TradingContext(Context):
         if self.net_worth > self.max_net_worth:
             self.max_net_worth = self.net_worth
 
-        if self.asset_balance == 0:
-            self.cost_basis = 0
+        # if self.asset_balance == 0:
+        #     self.cost_basis = 0
 
         current_state = self._get_state()
 

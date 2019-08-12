@@ -31,7 +31,7 @@ def __do_train_session(session):
     while not done:
         action, _states = model.predict(obs)
         obs, reward, done, info = test_env.step(action)
-        reward_sum += reward
+        reward_sum *= reward
         test_env.render(info)
 
     test_history = test_env.states

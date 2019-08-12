@@ -1,7 +1,7 @@
 version: 1
 formatters:
   detail:
-    format: '%(asctime)s - %(levelname)-5s - %(filename)-10s - %(funcName)18s():%(lineno)-3d - %(message)s'
+    format: '%(asctime)s - %(levelname)-8s - %(filename)-10s - %(funcName)18s():%(lineno)-3d - %(message)s'
 handlers:
   console:
     class: logging.StreamHandler
@@ -16,6 +16,11 @@ handlers:
     when: midnight
     backupCount: 7
     filename: ../application.log
+loggers:
+  tensorflow:
+    level: DEBUG
+    handlers: [console, file]
+    propagate: no
 root:
   level: INFO
   handlers: [console, file]
