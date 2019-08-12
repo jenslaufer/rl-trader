@@ -9,7 +9,7 @@
         "learning_rate" : 0.0007, 
         "_init_setup_model" : true, 
         "gamma" : 0.99, 
-        "vf_coef" : 0.25, 
+        "vf_coef" : 0.5, 
         "env" : {
             "name" : "di.factory.VecEnvFactory", 
             "target" : "stable_baselines.common.vec_env.DummyVecEnv", 
@@ -51,9 +51,9 @@
             ]
         }, 
         "max_grad_norm" : 0.5, 
-        "epsilon" : 0.001, 
+        "epsilon" : 0.00001, 
         "name" : "stable_baselines.A2C", 
-        "lr_schedule" : "constant"
+        "lr_schedule" : "linear"
     }, 
     "total_timesteps" : NumberInt(50000), 
     "test_env" : {

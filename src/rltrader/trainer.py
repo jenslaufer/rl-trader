@@ -9,6 +9,8 @@ from stable_baselines import A2C
 import logging
 import logging.config
 import yaml
+import math
+from math import exp
 
 
 def __do_train_session(session):
@@ -31,8 +33,9 @@ def __do_train_session(session):
     while not done:
         action, _states = model.predict(obs)
         obs, reward, done, info = test_env.step(action)
-        reward_sum *= reward
+        reward_sum += reward
         test_env.render(info)
+    reward_sum = exp(reward_sum)
 
     test_history = test_env.states
 
