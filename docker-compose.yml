@@ -4,6 +4,8 @@ services:
   trainingdev:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
     container_name: rltrader-dev
+    environment:
+      - DB_URL=mongodb://rltrainingdb-dev
     volumes: 
       - $DATA_DIR:/rldata
       - ./:/code

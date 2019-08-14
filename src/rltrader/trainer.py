@@ -11,6 +11,7 @@ import logging.config
 import yaml
 import math
 from math import exp
+import os
 
 
 def __do_train_session(session):
@@ -61,7 +62,7 @@ def __save_model(model, id, fs):
 
 def do_train():
     # TODO extract db name to external docker config
-    client = MongoClient("mongodb://rltrainingdb-dev")
+    client = MongoClient(os.environ['DB_URL'])
 
     db = client['training']
     fs = gridfs.GridFS(db)
