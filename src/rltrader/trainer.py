@@ -93,6 +93,7 @@ if __name__ == '__main__':
     print('current working directory: ' + os.getcwd())
     print('module location: ' + __file__)
     logging.config.dictConfig(
-        yaml.load(open('/usr/local/lib/python3.5/dist-packages/rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
+        yaml.load(open('logging.yml', 'r'), Loader=yaml.FullLoader))
+        # yaml.load(open('/usr/local/lib/python3.5/dist-packages/rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
     do_train()
