@@ -9,8 +9,9 @@ setup(name='rltrader',
                         'tensorflow==1.13.1',
                         'keras==2.2.4',
                         'keras-rl==0.4.2',
-                        'pymongo==3.8.0',
+                        'pymongo=pip =3.8.0',
                         'cloudpickle==1.2.1'],
       packages=find_namespace_packages(where='src'),
-      package_dir={'': 'src'}
+      package_dir={'': 'src'},
+      include_package_data=True
       )
