@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  trainingdev:
+    image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
+    container_name: rltrader-dev
+    environment:
+      - DB_URL=mongodb://rltrainingdb-dev
+    volumes: 
+      - $DATA_DIR:/rldata
+      - ./:/code
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - rltrainingdbdev
+
+  data-analysis-dashboard:
+    image: jenslaufer/rl-data-analysis:0.1.0
+    container_name: data-analysis-dashboard
+    ports:
+      - '8081:3838'
+    depends_on: 
+      - rltrainingdbdev
+
+  rltrainingdbdev:
+    image: mongo:3.6.13
+    container_name: "rltrainingdb-dev"
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_rltrainer_data:/data/db
+    command: mongod
+
+volumes:
+  mongodb_rltrainer_data:
