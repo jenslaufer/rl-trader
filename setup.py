@@ -10,7 +10,9 @@ setup(name='rltrader',
                         'keras==2.2.4',
                         'keras-rl==0.4.2',
                         'pymongo==3.8.0',
-                        'cloudpickle==1.2.1'],
+                        'cloudpickle==1.2.1',
+                        'setuptools-git==1.2'
+                        ],
       packages=find_namespace_packages(where='src'),
       package_dir={'': 'src'},
       include_package_data=True
