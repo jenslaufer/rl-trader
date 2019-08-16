@@ -92,9 +92,15 @@ def do_train():
 if __name__ == '__main__':
     print('current working directory: ' + os.getcwd())
     print('module location: ' + __file__)
-    print('path: ' + os.path.dirname(os.path.realpath(__file__)))
+    module_path = os.path.dirname(os.path.realpath(__file__))
+    print('module path: ' + module_path + ' contains:')
+    directory = os.scandir(module_path)
+    for f in directory:
+        if f.is_file():
+            print(f)
+
     logging.config.dictConfig(
-        yaml.load(open(os.path.dirname(os.path.realpath(__file__)) + 'rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
+        yaml.load(open(module_path + 'logging.yml', 'r'), Loader=yaml.FullLoader))
         # yaml.load(open('/usr/local/lib/python3.5/dist-packages/rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
     do_train()
