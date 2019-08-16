@@ -68,8 +68,8 @@ def do_train():
     fs = gridfs.GridFS(db)
 
     logging.info('Loading training session from db...')
-    # sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
-    sessions = list(db['sessions'].find())
+    sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
+    # sessions = list(db['sessions'].find())
     session_count = 0
     for session in sessions:
         id = session['_id']
