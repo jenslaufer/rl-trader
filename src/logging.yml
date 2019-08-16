@@ -15,7 +15,7 @@ handlers:
     utc: true
     when: midnight
     backupCount: 7
-    filename: ../application.log
+    filename: application.log
 loggers:
   tensorflow:
     level: DEBUG
