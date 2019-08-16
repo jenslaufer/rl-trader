@@ -15,5 +15,6 @@ setup(name='rltrader',
                         ],
       packages=find_namespace_packages(where='src'),
       package_dir={'': 'src'},
-      package_data={'rltrader': ['rltrader/*.yml']}
+      # package_data={'rltrader': ['rltrader/*.yml']}
+      data_files=[('', ['src/logging.yml'])]
       )
