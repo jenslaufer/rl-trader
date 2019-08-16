@@ -90,6 +90,7 @@ def do_train():
 
 
 if __name__ == '__main__':
+    print('current working directory: ' + os.getcwd())
     logging.config.dictConfig(
         yaml.load(open('../logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
