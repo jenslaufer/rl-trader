@@ -68,11 +68,13 @@ def do_train():
     fs = gridfs.GridFS(db)
 
     logging.info('Loading training session from db...')
-    sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
-
+    # sessions = list(db['sessions'].find({"test_metrics": {'$exists': False}}))
+    sessions = list(db['sessions'].find())
+    session_count = 0
     for session in sessions:
         id = session['_id']
-        logging.info('Starting training on session %s...', id)
+        session_count += 1
+        logging.info('Starting training session %s of %s (id=%s)...', session_count, len(sessions), id)
         model, reward_sum, training_history, test_history = __do_train_session(
             session)
         logging.info('Storing training results...')
@@ -101,6 +103,5 @@ if __name__ == '__main__':
 
     logging.config.dictConfig(
         yaml.load(open(module_path + '/logging.yml', 'r'), Loader=yaml.FullLoader))
-        # yaml.load(open('/usr/local/lib/python3.5/dist-packages/rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
     do_train()
