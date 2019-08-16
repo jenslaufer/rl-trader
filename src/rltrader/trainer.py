@@ -100,7 +100,7 @@ if __name__ == '__main__':
             print(f)
 
     logging.config.dictConfig(
-        yaml.load(open(module_path + 'logging.yml', 'r'), Loader=yaml.FullLoader))
+        yaml.load(open(module_path + '/logging.yml', 'r'), Loader=yaml.FullLoader))
         # yaml.load(open('/usr/local/lib/python3.5/dist-packages/rltrader/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
     do_train()
