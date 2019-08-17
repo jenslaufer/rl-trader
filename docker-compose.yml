@@ -5,7 +5,7 @@ services:
     image: jenslaufer/docker-generic-tensorflow-python:tf_1_13_1-py3-cpu
     container_name: rltrader-dev
     environment:
-      - DB_URL=mongodb://rltrainingdb-dev
+      - MONGODB_URI=mongodb://rltrainingdb-dev
     volumes: 
       - $DATA_DIR:/rldata
       - ./:/code
@@ -16,10 +16,12 @@ services:
       - rltrainingdbdev
 
   data-analysis-dashboard:
-    image: jenslaufer/rl-data-analysis:0.1.0
-    container_name: data-analysis-dashboard
+    image: jenslaufer/rl-data-analysis:latest
+    container_name: data-analysis-dashboard-dev
     ports:
       - '8081:3838'
+    environment:
+      - "MONGODB_URI=mongodb://rltrainingdb-dev"
     depends_on: 
       - rltrainingdbdev
 
@@ -27,10 +29,7 @@ services:
     image: mongo:3.6.13
     container_name: "rltrainingdb-dev"
     ports:
-      - 27018:27017
+      - 37017:27017
     volumes:
-      - mongodb_rltrainer_data:/data/db
+      - $DB_DIR:/data/db
     command: mongod
-
-volumes:
-  mongodb_rltrainer_data:
