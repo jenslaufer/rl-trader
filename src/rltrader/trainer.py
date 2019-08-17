@@ -73,7 +73,8 @@ def do_train():
     for session in sessions:
         id = session['_id']
         session_count += 1
-        logging.info('Starting training session %s of %s (id=%s)...', session_count, len(sessions), id)
+        logging.info('Starting training session %s of %s (id=%s)...',
+                     session_count, len(sessions), id)
         model, reward_sum, training_history, test_history = __do_train_session(
             session)
         logging.info('Storing training results...')
@@ -91,15 +92,7 @@ def do_train():
 
 
 if __name__ == '__main__':
-    print('current working directory: ' + os.getcwd())
-    print('module location: ' + __file__)
     module_path = os.path.dirname(os.path.realpath(__file__))
-    print('module path: ' + module_path + ' contains:')
-    directory = os.scandir(module_path)
-    for f in directory:
-        if f.is_file():
-            print(f)
-
     logging.config.dictConfig(
         yaml.load(open(module_path + '/logging.yml', 'r'), Loader=yaml.FullLoader))
     logging.info('Logging module setup finished.')
