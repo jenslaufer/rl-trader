@@ -61,8 +61,7 @@ def __save_model(model, id, fs):
 
 
 def do_train():
-    # TODO extract db name to external docker config
-    client = MongoClient(os.environ['DB_URL'])
+    client = MongoClient(os.environ['MONGODB_URI'])
 
     db = client['training']
     fs = gridfs.GridFS(db)
