@@ -16,7 +16,7 @@ services:
       - rltrainingdbdev
 
   data-analysis-dashboard:
-    image: jenslaufer/rl-data-analysis:latest
+    image: jenslaufer/rl-data-analysis:0.1.1
     container_name: data-analysis-dashboard-dev
     ports:
       - '8081:3838'
