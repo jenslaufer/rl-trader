@@ -14,7 +14,7 @@ class Space:
 
         # TODO split action_space from observation_space
         # -> remove space class??
-        # -> rename to state
+        # -> rename to observation_space
 
     def next_observation(self):
         return None
@@ -24,7 +24,7 @@ class LookbackWindowDataSpace(Space):
 
     __scaler = preprocessing.MinMaxScaler()
 
-    def __init__(self, history_lookback, data, date_col=None,
+    def __init__(self, history_lookback, data, date_col=None, price_col=None,
                  max_steps=6666, random_start=False, seed=None):
         if seed != None:
             random.seed(seed)
@@ -34,9 +34,12 @@ class LookbackWindowDataSpace(Space):
         self.history_lookback = history_lookback
         self.max_steps = max_steps
         self.date_col = date_col
+        self.price_col = price_col
 
         ncols = len(self.data.columns)
         if date_col != None:
+            ncols -= 1
+        if price_col != None:
             ncols -= 1
 
         # static part of the observation space contains the OHCL values for the last (history_lookback + 1) prices
@@ -49,8 +52,6 @@ class LookbackWindowDataSpace(Space):
 
         super(LookbackWindowDataSpace, self).__init__(
             action_space, observation_space)
-
-        # self.reset()
 
     def reset(self):
         # sets the current starting point within the data frame...
@@ -72,17 +73,28 @@ class LookbackWindowDataSpace(Space):
         done = False
         obs = None
         scaled_obs = None
+        self.current_price = None
 
-        # remove data column if exists...
+        # remove date column if exists...
         if self.date_col != None:
             self.data = self.data[self.data.columns.difference(
                 [self.date_col])]
+
+        # remove price column if exists...
+        if self.price_col != None:
+            # TODO extract price from data frame
+            # TODO calculate current_price by best_bid if action_type == SELL
+            # TODO calculate current_price by best_ask if action_type == BUY
+            self.current_price = self.data.at[self.data.index[-1],self.price_col]
+            logging.debug('current price: %s', self.current_price)
 
         # take observations including history_lookback...
         if self.current_index <= self.end:
             obs = self.data[self.current_index -
                             self.history_lookback - 1: self.current_index]
-            scaled_obs = self.__scaler.fit_transform(obs)
+            obs = obs[self.data.columns.difference(
+                [self.price_col])]
+            # scaled_obs = self.__scaler.fit_transform(obs)
             obs = obs.values
 
         if self.current_index >= self.end:
@@ -95,5 +107,5 @@ class LookbackWindowDataSpace(Space):
         return (obs, scaled_obs, done)
 
     # helper method - delete when we got rid of any dependency to obs in context
-    def get_current_obs(self):
-        return self.current_obs, self.current_scaled_obs
+    def get_current_price(self):
+        return self.current_price

@@ -41,10 +41,9 @@ class Env(BaseEnv):
         # return scaled_obs
 
     def step(self, action):
-        # TODO there should be no dependency to obs / scaled_obs in .act(...)
-        obs, scaled_obs = self.space.get_current_obs()
+        current_price = self.space.get_current_price()
         net_worth_depleted, old_state, current_state = self.context.act(
-            action, obs, scaled_obs)
+            action, current_price)
         action_type = self.context.render_action_type(action[0])
         action_amount = action[1]
         logging.debug('Action taken: %s (%s)', action_type, action_amount)

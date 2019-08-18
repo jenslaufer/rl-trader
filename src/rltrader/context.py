@@ -3,9 +3,10 @@ import logging
 
 from sklearn import preprocessing
 
-BUY = 'BUY' # action_type in [0,1)
-SELL = 'SELL' # action_type in [1,2)
-HOLD = 'HOLD' # action_type in [2,3)
+BUY = 'BUY'  # action_type in [0,1)
+SELL = 'SELL'  # action_type in [1,2)
+HOLD = 'HOLD'  # action_type in [2,3)
+
 
 class Context:
 
@@ -16,11 +17,9 @@ class Context:
 class TradingContext(Context):
 
     def __init__(self, initial_fundings,
-                 trading_loss_pct, price_col_index):
+                 trading_loss_pct):
         self.trading_loss_pct = trading_loss_pct
         self.initial_fundings = initial_fundings
-        self.price_col_index = price_col_index
-        # self.reset()
 
     def reset(self):
         # resets all accout data
@@ -40,33 +39,23 @@ class TradingContext(Context):
         return dict(vars(self))
 
     # TODO get rid of obs and obs_scaled here, because it is nothing we want to take care with here
-    def act(self, action, obs, obs_scaled):
+    def act(self, action, current_price):
         action_type = action[0]
         amount = action[1]
 
         old_state = self._get_state()
         done = self.net_worth <= 0
 
-        # TODO consider passing attributes instead of global class attributes like current_price
-        # TODO remove dependency on price_col_index -> pass current_price as method_param?
-        self.current_price = obs[len(obs) - 1][self.price_col_index]
-        # TODO calculate current_price by best_bid if action_type == SELL
-        # TODO calculate current_price by best_ask if action_type == BUY
-
-        # TODO delete this workaround after fixing preprocessing
-        if self.current_price == 0:
-            self.current_price = 0.001
-            # self.current_price = 0.0000000000000001
-
         self.fees = 0
 
+        logging.debug('current price used for next action is: %s', current_price)
         if action_type < 1:
-            self._buy(amount)
+            self._buy(amount, current_price)
         elif action_type < 2:
-            self._sell(amount)
+            self._sell(amount, current_price)
 
         # realized + unrealized PnL
-        self.net_worth = self.balance + self.asset_balance * self.current_price
+        self.net_worth = self.balance + self.asset_balance * current_price
         if self.net_worth > self.max_net_worth:
             self.max_net_worth = self.net_worth
 
@@ -77,12 +66,12 @@ class TradingContext(Context):
 
         return done, old_state, current_state
 
-    def _buy(self, amount):
+    def _buy(self, amount, price):
         # Buy amount % of balance in assets
-        total_possible_assets = int(self.balance / self.current_price)
+        total_possible_assets = int(self.balance / price)
         assets_bought = int(total_possible_assets * amount)
         #prev_cost = self.cost_basis * self.asset_balance
-        additional_cost = assets_bought * self.current_price
+        additional_cost = assets_bought * price
 
         # only buy with sufficient balance
         if self.balance >= additional_cost:
@@ -97,16 +86,16 @@ class TradingContext(Context):
         #     self.asset_balance = (self.balance - self.fees)/self.price
         #     self.balance -= self.balance
 
-    def _sell(self, amount):
+    def _sell(self, amount, price):
         # Sell amount % of assets held
         assets_sold = int(self.asset_balance * amount)
 
         # only sell with sufficient assets
         if self.asset_balance >= assets_sold:
-            self.balance += assets_sold * self.current_price
+            self.balance += assets_sold * price
             self.asset_balance -= assets_sold
             self.total_assets_sold += assets_sold
-            self.total_sales_value += assets_sold * self.current_price
+            self.total_sales_value += assets_sold * price
 
         # TODO include fees
         # if self.asset_balance > 0:

@@ -16,9 +16,8 @@
                 {
                     "context" : {
                         "trading_loss_pct" : 0.001, 
-                        "initial_fundings" : 100.0, 
-                        "name" : "rltrader.context.TradingContext", 
-                        "price_col_index" : NumberInt(2)
+                        "initial_fundings" : 1000000.0, 
+                        "name" : "rltrader.context.TradingContext"
                     }, 
                     "space" : {
                         "max_steps" : NumberInt(3000), 
@@ -29,7 +28,8 @@
                             "path" : "/rldata/preprocessed/1min/train_ZL000023.csv"
                         },  
                         "name" : "rltrader.spaces.LookbackWindowDataSpace", 
-                        "date_col" : "date"
+                        "date_col" : "date",
+                        "price_col" : "price"
                     }, 
                     "reward" : {
                         "name" : "rltrader.rewards.portfolio_log"
@@ -58,9 +58,8 @@
     "test_env" : {
         "context" : {
             "trading_loss_pct" : 0.001, 
-            "initial_fundings" : 100.0, 
-            "name" : "rltrader.context.TradingContext", 
-            "price_col_index" : NumberInt(2)
+            "initial_fundings" : 1000000.0, 
+            "name" : "rltrader.context.TradingContext"
         }, 
         "space" : {
             "max_steps" : NumberInt(3000), 
@@ -71,7 +70,8 @@
                 "path" : "/rldata/preprocessed/1min/test_ZL000023.csv"
             }, 
             "name" : "rltrader.spaces.LookbackWindowDataSpace", 
-            "date_col" : "date"
+            "date_col" : "date",
+            "price_col" : "price"
         }, 
         "reward" : {
             "name" : "rltrader.rewards.portfolio_log"
